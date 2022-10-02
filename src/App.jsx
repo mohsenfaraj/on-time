@@ -2,6 +2,7 @@ import { useState , useEffect } from 'react'
 import Timer from './timer'
 import AddSet from './addSet'
 import AddTime from './addTime'
+import "./style.css"
 function App() {
   const [times , setTimes] = useState(
     [
@@ -15,6 +16,7 @@ function App() {
   const [activeTimer , setactiveTimer] = useState(0)
   const [addTimeWindow , setAddtimeWindow ] = useState(false)
   const [addSetWindow , setAddSetWindow] = useState(false)
+  const [remaning , setRemaining] = useState(remainingTime()) ;
   function prevTimer(e) {
     if (activeTimer !== 0)
     setactiveTimer(activeTimer - 1) ;
@@ -84,14 +86,14 @@ function App() {
     const hour = today.getHours() ;
     const min = today.getMinutes() ;
     const second = today.getSeconds() ;
-    const target = closestTime(hour , min) ;
+    const [target , index] = closestTime(hour , min) ;
     if (target == -1) {
-        return -1 ;
+        return [-1 , -1] ;
     }
     else {
         const [targetHour , targetMin] = target.split(":") ;
         const remaining = ((targetHour * 60) + parseInt(targetMin) - (hour * 60) - parseInt(min)) * 60 - second;
-        return remaining ;
+        return [remaining , index ];
     }
 }
 
@@ -102,21 +104,21 @@ function closestTime(hour , min){
         const [targetHour , targetMin] = timeList[i].split(":") ;
         const target = (targetHour * 60) + parseInt(targetMin) ;
         if (total < target) {
-            return timeList[i]
+            return [timeList[i] , i]
         }
         else if (total == target && i < timeList.length-1) {
-            return timeList[i+1]
+            return [timeList[i+1] , i + 1]
         }
         else if (i == timeList.length && total < target) {
-            return timeList[i]
+            return [timeList[i] , i]
         }
     }
-    return -1 ;
+    return [-1 , -1] ;
 }
 
 useEffect(() => {
   const timer = setInterval(() => {
-    setRemaining(remainingTime())
+    setRemaining(remainingTime)
   }, 1000);
 
   return () => {
@@ -135,7 +137,7 @@ useEffect(() => {
   return (
     <div>
       <h1>On-Time: Never miss any buss again</h1>
-      <Timer timer = {times[activeTimer]} remaining = {remainingTime()}/>
+      <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
       <button onClick={showAddSet}>add new set</button>
