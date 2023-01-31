@@ -2,21 +2,22 @@ function Countdown(props) {
     if (props.remaining < 0) {
         return (
             <div>
-                <h1>No Bus for you!</h1>
-                <p>there will be no bus after this time... sorry mate!</p>
+                <h3>No Bus Found!</h3>
+                <p>there will be no bus after this time.</p>
             </div>
         )
+    }
+    else if (props.remaining/60 > 0) {
+        return (
+            <div>
+                <h3>Remaining Time : More than one Hour!</h3>
+            </div>
+          );
     }
     else {
         return (
             <div>
-                <h1>Remaining Time:</h1>
-                {props.remaining < 0 && 
-                <p>
-                    no bus will arrive after this time!
-                </p>
-                }
-                <p>{Math.floor(props.remaining/60)} Minitues and {props.remaining%60} Seconds</p>
+                <h3>Remaining Time {Math.floor(props.remaining/60)} Minitues and {props.remaining%60} Seconds</h3>
             </div>
           );
     }
