@@ -9,14 +9,25 @@ function App() {
       {
         name : "Daneshkade" ,
         background: "#ccc" ,
-        times : ["7:30" , "8:40" , "9:50" , "11:00" , "21:00"]
+        times : ["7:35" , "8:40" , "9:05" , "9:55" , "10:35" , "11:20" , "11:50" , "12:20" ,
+        "12:50" , "13:20" , "13:40" , "14:10" , "14:50" , "15:30" , "15:50" , "16:10" ,
+        "16:25" , "16:45" , "17:05"
+      ]
+      } , 
+      {
+        name:"UUT" ,
+        background : "yellow" , 
+        times : ["8:20" , "8:45" , "9:35" , "10:15" , "11:00" , "11:30" , "12:00" , "12:30" ,
+        "13:00" , "13:20" , "13:50" , "14:30" , "15:10" , "15:30" , "15:50" , "16:05" ,
+        "16:25" , "16:45" , "17:40" , "18:15" , "19:10"
+      ]
       }
     ]
   )
   const [activeTimer , setactiveTimer] = useState(0)
   const [addTimeWindow , setAddtimeWindow ] = useState(false)
   const [addSetWindow , setAddSetWindow] = useState(false)
-  const [remaning , setRemaining] = useState(remainingTime()) ;
+  const [remaning , setRemaining] = useState(0) ;
   function prevTimer(e) {
     if (activeTimer !== 0)
     setactiveTimer(activeTimer - 1) ;
@@ -92,8 +103,8 @@ function App() {
     }
     else {
         const [targetHour , targetMin] = target.split(":") ;
-        const remaining = ((targetHour * 60) + parseInt(targetMin) - (hour * 60) - parseInt(min)) * 60 - second;
-        return [remaining , index ];
+        const remainingTime = ((targetHour * 60) + parseInt(targetMin) - (hour * 60) - parseInt(min)) * 60 - second;
+        return [remainingTime , index ];
     }
 }
 
@@ -117,14 +128,16 @@ function closestTime(hour , min){
 }
 
 useEffect(() => {
+  setRemaining(remainingTime())
   const timer = setInterval(() => {
-    setRemaining(remainingTime)
+    setRemaining(remainingTime())
+    console.log(activeTimer)
   }, 1000);
 
   return () => {
     clearInterval(timer)
   }
-}, [])
+}, [activeTimer])
 
 
   let modal = "";
@@ -134,14 +147,15 @@ useEffect(() => {
   else if (addTimeWindow) {
     modal = <AddTime close={closeModal} addNewTime={addNewTime}/>
   }
+
   return (
     <div>
       <h1>On-Time: Never miss any buss again</h1>
-      <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
       <button onClick={showAddSet}>add new set</button>
       <button onClick={showAddTime}>add time</button>
+      <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
       {modal}
     </div>
   )
