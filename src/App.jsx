@@ -65,6 +65,10 @@ function App() {
       return index !== activeTimer
     })
     setTimes(newTimes)
+    // fix out of bound Active Timer problem:
+    if (activeTimer > newTimes.length - 1) {
+      setactiveTimer(activeTimer - 1)
+    }
   }
 
   function showEditSet(){
