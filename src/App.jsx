@@ -131,7 +131,6 @@ useEffect(() => {
   setRemaining(remainingTime())
   const timer = setInterval(() => {
     setRemaining(remainingTime())
-    console.log(activeTimer)
   }, 1000);
 
   return () => {
