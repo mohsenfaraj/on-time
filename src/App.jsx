@@ -1,7 +1,6 @@
 import { useState , useEffect } from 'react'
 import Timer from './timer'
 import AddSet from './addSet'
-import AddTime from './addTime'
 import "./style.css"
 function App() {
   const [times , setTimes] = useState(
@@ -25,7 +24,6 @@ function App() {
     ]
   )
   const [activeTimer , setactiveTimer] = useState(0)
-  const [addTimeWindow , setAddtimeWindow ] = useState(false)
   const [addSetWindow , setAddSetWindow] = useState(false)
   const [remaning , setRemaining] = useState(0) ;
   function prevTimer(e) {
@@ -44,14 +42,8 @@ function App() {
     setAddSetWindow(true)
   }
 
-  function showAddTime(e) {
-    closeModal()
-    setAddtimeWindow(true)
-  }
-
   function closeModal(e) {
     setAddSetWindow(false)
-    setAddtimeWindow(false)
   }
 
   function addNewSet(timeset) {
@@ -60,37 +52,6 @@ function App() {
     setTimes(newTimes)
   }
 
-  function addNewTime(time) {
-    const [hour , min] = time.split(":") ;
-    const currentTimes = times[activeTimer].times ;
-    let len = currentTimes.length ;
-    if (len > 0) {
-      const [lastHour , lastMin] = currentTimes[len-1].split(":") ;
-      if ((hour * 60) + parseInt(min) > (lastHour * 60) + parseInt(lastMin)) {
-        currentTimes.push(time);
-      }
-      else {
-        for (let i = 0 ; i < len; i ++) {
-          const [targetHour , targetMin] = currentTimes[i].split(":") ;
-          if ((hour * 60) + parseInt(min) === (targetHour * 60) + parseInt(targetMin)) {
-            // Do nothing
-            break ;
-          }
-          else if ((hour * 60) + parseInt(min) < (targetHour * 60) + parseInt(targetMin)) {
-            currentTimes.splice(i , 0 , time) ;
-            break ;
-          }
-        }
-      }
-    }
-    // if there is no time
-    else {
-      currentTimes.push(time)
-    }
-    const newTime = [...times] ;
-    newTime.times = currentTimes ;
-    setTimes(newTime);
-  }
 
   function remainingTime() {
     const today = new Date() ;
@@ -143,9 +104,6 @@ useEffect(() => {
   if (addSetWindow) {
     modal = <AddSet close={closeModal} addNewSet={addNewSet}/>
   }
-  else if (addTimeWindow) {
-    modal = <AddTime close={closeModal} addNewTime={addNewTime}/>
-  }
 
   return (
     <div>
@@ -153,7 +111,6 @@ useEffect(() => {
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
       <button onClick={showAddSet}>add new set</button>
-      <button onClick={showAddTime}>add time</button>
       <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
       {modal}
     </div>
