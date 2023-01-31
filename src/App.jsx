@@ -60,6 +60,13 @@ function App() {
     setTimes(newTimes)
   }
 
+  function removeSet(){
+    const newTimes = times.filter((element , index) => {
+      return index !== activeTimer
+    })
+    setTimes(newTimes)
+  }
+
   function showEditSet(){
     setEditWindow(true);
   }
@@ -125,6 +132,7 @@ useEffect(() => {
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
       <button onClick={showEditSet}>edit set</button>
+      <button onClick={removeSet} disabled = {times.length <= 1}>remove set</button>
       <button onClick={showAddSet}>add new set</button>
       <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
       {modal}
