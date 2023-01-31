@@ -25,6 +25,7 @@ function App() {
   )
   const [activeTimer , setactiveTimer] = useState(0)
   const [addSetWindow , setAddSetWindow] = useState(false)
+  const [editWindow , setEditWindow] = useState(false)
   const [remaning , setRemaining] = useState(0) ;
   function prevTimer(e) {
     if (activeTimer !== 0)
@@ -44,12 +45,23 @@ function App() {
 
   function closeModal(e) {
     setAddSetWindow(false)
+    setEditWindow(false)
   }
 
   function addNewSet(timeset) {
     const newTimes = [...times]
     newTimes.push(timeset)
     setTimes(newTimes)
+  }
+
+  function updateSet(timeset){
+    const newTimes = [...times]
+    newTimes[activeTimer] = timeset
+    setTimes(newTimes)
+  }
+
+  function showEditSet(){
+    setEditWindow(true);
   }
 
 
@@ -102,14 +114,17 @@ useEffect(() => {
 
   let modal = "";
   if (addSetWindow) {
-    modal = <AddSet close={closeModal} addNewSet={addNewSet}/>
+    modal = <AddSet close={closeModal} addNewSet={addNewSet} mode="add"/>
   }
-
+  else if (editWindow) {
+    modal = <AddSet close={closeModal} updateSet={updateSet} updating={times[activeTimer]} mode ="update" />
+  }
   return (
     <div>
       <h1>On-Time: Never miss any buss again</h1>
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
+      <button onClick={showEditSet}>edit set</button>
       <button onClick={showAddSet}>add new set</button>
       <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
       {modal}

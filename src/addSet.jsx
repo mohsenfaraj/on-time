@@ -27,33 +27,45 @@ function AddSet(props) {
             background : bg , 
             times : times ,
         }
-        props.addNewSet(timeset)
-        
+        if (props.mode == "add"){
+            props.addNewSet(timeset)
+        }
+        else if (props.mode == "update") {
+            props.updateSet(timeset)
+        }
         form.current.reset() 
-        props.close() ;
+        props.close()
+    }
+    function printTimes() {
+        let text = "" 
+        props.updating.times.forEach(time => {
+            text += time + "\n"
+        });
+        text = text.trim()
+        return text
     }
     return (
         <div className="popup">
             <form ref={form}>
             <div className="row">
-                <h4>Add New Set</h4>
+                {props.mode == "add"?<h4>Add New Set</h4>:<h4>Update Existing Set</h4>}
             </div> 
                 <div className="row">
                     <label htmlFor="name">name</label>
-                    <input type="text" name="name" id="name" ref={nameRef}/>
+                    <input type="text" name="name" id="name" ref={nameRef} defaultValue={props.mode == "update"? props.updating.name : ""}/>
                 </div>
                 <div className="row">
                     <label htmlFor="bg">background</label>
-                    <input type="text" name="background" id="bg" ref={backgroundColorRef}/>
+                    <input type="text" name="background" id="bg" ref={backgroundColorRef} defaultValue={props.mode == "update"? props.updating.background : ""}/>
                 </div>
                 <div className="row">
                     <label htmlFor="times">times:</label>
                 </div>
                 <div className="row">
-                    <textarea name="times" id="times" cols="30" rows="10" ref={timesRef}></textarea>
+                    <textarea name="times" id="times" cols="30" rows="10" ref={timesRef} defaultValue={props.mode == "update"? printTimes() : ""}></textarea>
                 </div>
                 <div className="row">
-                    <input type="submit" value="Add" onClick={addData}/>
+                    <input type="submit" value={props.mode == "add" ? "Add" : "Update"} onClick={addData}/>
                     <input type="button" value="Cancel" onClick={props.close}/>
                 </div>
             </form>
