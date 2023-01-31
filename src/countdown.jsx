@@ -7,17 +7,17 @@ function Countdown(props) {
             </div>
         )
     }
-    else if (props.remaining/60 > 0) {
+    else if (props.remaining/3600 > 1) {
         return (
             <div>
-                <h3>Remaining Time : More than one Hour!</h3>
+                <h3>Remaining Time: More than one Hour!</h3>
             </div>
           );
     }
     else {
         return (
             <div>
-                <h3>Remaining Time {Math.floor(props.remaining/60)} Minitues and {props.remaining%60} Seconds</h3>
+                <h3>Remaining Time: {Math.floor(props.remaining/60)} Minitues and {props.remaining%60} Seconds</h3>
             </div>
           );
     }
