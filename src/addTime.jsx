@@ -9,11 +9,21 @@ function AddTime(props) {
         props.addNewTime(time);
     }
     return (
-        <form>
+        <div className="popup">
+            <form>
+            <div className="row">
+                <h4>Add Time</h4>
+            </div>
+            <div className="row">
+                <label htmlFor="time">new time:</label>
             <input type="text" name="time" id="time" ref={timeRef}/>
-            <input type="submit" value="add" onClick={addTime}/>
-            <input type="button" value="close" onClick={props.close}/>
-        </form>
+            </div>
+            <div className="row">
+                <input type="submit" value="add" onClick={addTime}/>
+                <input type="button" value="close" onClick={props.close}/>
+            </div>
+            </form>
+        </div>
     )
 }
 export default AddTime

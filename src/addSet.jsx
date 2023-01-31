@@ -30,18 +30,34 @@ function AddSet(props) {
         props.addNewSet(timeset)
         
         form.current.reset() 
+        props.close() ;
     }
     return (
-        <form ref={form}>
-        <label htmlFor="name">name</label>
-        <input type="text" name="name" id="name" ref={nameRef}/>
-        <label htmlFor="bg">background color</label>
-        <input type="text" name="background" id="bg" ref={backgroundColorRef}/>
-        <label htmlFor="times">times</label>
-        <textarea name="times" id="times" cols="30" rows="10" ref={timesRef}></textarea>
-        <input type="submit" value="add" onClick={addData}/>
-        <input type="button" value="close" onClick={props.close}/>
-      </form>
+        <div className="popup">
+            <form ref={form}>
+            <div className="row">
+                <h4>Add New Set</h4>
+            </div> 
+                <div className="row">
+                    <label htmlFor="name">name</label>
+                    <input type="text" name="name" id="name" ref={nameRef}/>
+                </div>
+                <div className="row">
+                    <label htmlFor="bg">background</label>
+                    <input type="text" name="background" id="bg" ref={backgroundColorRef}/>
+                </div>
+                <div className="row">
+                    <label htmlFor="times">times:</label>
+                </div>
+                <div className="row">
+                    <textarea name="times" id="times" cols="30" rows="10" ref={timesRef}></textarea>
+                </div>
+                <div className="row">
+                    <input type="submit" value="Add" onClick={addData}/>
+                    <input type="button" value="Cancel" onClick={props.close}/>
+                </div>
+            </form>
+        </div>
     )
 }
 
