@@ -71,14 +71,22 @@ button:disabled , input[type="submit"]:disabled , input[type="button"]:disabled 
     left : 50% ;
     transform: translate(-50% , -50%);
     display: flex;
+    box-shadow: 0 0 18px #333 ;
 }
-.row {
+.popup h4 {
+    font-size: 18px;
+    font-weight: bold;
+}
+.row label {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
-    margin: 10px;
     align-items: center;
     text-align: center;
+    padding: 5px 10px;
+}
+.row label span {
+    text-align: left;
+    padding: 5px;
 }
 .container {
     margin: auto;

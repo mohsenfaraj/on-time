@@ -51,18 +51,24 @@ function AddSet(props) {
                 {props.mode == "add"?<h4>Add New Set</h4>:<h4>Update Existing Set</h4>}
             </div> 
                 <div className="row">
-                    <label htmlFor="name">name</label>
-                    <input type="text" name="name" id="name" ref={nameRef} defaultValue={props.mode == "update"? props.updating.name : ""}/>
+                    <label>
+                        <span>name: </span>
+                        <input type="text" name="name" ref={nameRef} defaultValue={props.mode == "update"? props.updating.name : ""}/>
+                        </label>
                 </div>
                 <div className="row">
-                    <label htmlFor="bg">background</label>
-                    <input type="text" name="background" id="bg" ref={backgroundColorRef} defaultValue={props.mode == "update"? props.updating.color : ""}/>
+                    <label>
+                        <span>background: </span>
+                        <input type="text" name="background" ref={backgroundColorRef} defaultValue={props.mode == "update"? props.updating.color : ""}/>
+                    </label>
                 </div>
                 <div className="row">
-                    <label htmlFor="times">times:</label>
+                    <label>
+                        <span>times: </span>
+                    </label>
                 </div>
-                <div className="row">
-                    <textarea name="times" id="times" cols="30" rows="10" ref={timesRef} defaultValue={props.mode == "update"? printTimes() : ""}></textarea>
+                <div>
+                    <textarea name="times" id="times" cols="36" rows="10" ref={timesRef} defaultValue={props.mode == "update"? printTimes() : ""}></textarea>
                 </div>
                 <div className="row">
                     <input type="submit" value={props.mode == "add" ? "Add" : "Update"} onClick={addData}/>
