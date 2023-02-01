@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,700&display=swap');
 :root {
     --primary : #d83232 ;
 }
@@ -52,9 +52,16 @@ button:disabled , input[type="submit"]:disabled , input[type="button"]:disabled 
     background-color: var(--primary);
 }
 .header {
-    color: #a1a1a1;
-    font-weight: bold;
+    margin-top: 20px;
+}
+.header h1 {
+    color: var(--primary);
+    font-weight: bolder;
     font-size: 38px;
+}
+.header p {
+    color: #777;
+    font-size: 24px;
 }
 .popup {
     border: solid 1px #ccc;

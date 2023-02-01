@@ -134,7 +134,10 @@ useEffect(() => {
   }
   return (
     <div>
-      <h1 className='header'>[On-Time: Never miss any buss again]</h1>
+      <div className="header">
+      <h1>[On-Time]</h1>
+      <p>Never miss any buss again!</p>
+      </div>
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
       <button onClick={showEditSet}>edit set</button>
