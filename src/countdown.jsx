@@ -17,7 +17,8 @@ function Countdown(props) {
     else {
         return (
             <div>
-                <h3>Remaining Time: {Math.floor(props.remaining/60)} Minitues and {props.remaining%60} Seconds</h3>
+                <h3>Remaining Time</h3>
+                    <p>{Math.floor(props.remaining/60)} Minitues and {props.remaining%60} Seconds</p>
             </div>
           );
     }

@@ -7,7 +7,7 @@ function App() {
     [
       {
         name : "Daneshkade" ,
-        background: "#ccc" ,
+        color: "#326cd8" ,
         times : ["7:35" , "8:40" , "9:05" , "9:55" , "10:35" , "11:20" , "11:50" , "12:20" ,
         "12:50" , "13:20" , "13:40" , "14:10" , "14:50" , "15:30" , "15:50" , "16:10" ,
         "16:25" , "16:45" , "17:05"
@@ -15,7 +15,7 @@ function App() {
       } , 
       {
         name:"UUT" ,
-        background : "yellow" , 
+        color : "#d83232" , 
         times : ["8:20" , "8:45" , "9:35" , "10:15" , "11:00" , "11:30" , "12:00" , "12:30" ,
         "13:00" , "13:20" , "13:50" , "14:30" , "15:10" , "15:30" , "15:50" , "16:05" ,
         "16:25" , "16:45" , "17:40" , "18:15" , "19:10"
@@ -113,6 +113,8 @@ function closestTime(hour , min){
 
 useEffect(() => {
   setRemaining(remainingTime())
+  // set primary color:
+  document.documentElement.style.setProperty('--primary',times[activeTimer].color);
   const timer = setInterval(() => {
     setRemaining(remainingTime())
   }, 1000);
@@ -132,7 +134,7 @@ useEffect(() => {
   }
   return (
     <div>
-      <h1>On-Time: Never miss any buss again</h1>
+      <h1 className='header'>[On-Time: Never miss any buss again]</h1>
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
       <button onClick={showEditSet}>edit set</button>
