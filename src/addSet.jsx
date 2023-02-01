@@ -24,7 +24,7 @@ function AddSet(props) {
         //#TODO : remove the duplicates
         const timeset = {
             name : name ,
-            background : bg , 
+            color : bg , 
             times : times ,
         }
         if (props.mode == "add"){
@@ -56,7 +56,7 @@ function AddSet(props) {
                 </div>
                 <div className="row">
                     <label htmlFor="bg">background</label>
-                    <input type="text" name="background" id="bg" ref={backgroundColorRef} defaultValue={props.mode == "update"? props.updating.background : ""}/>
+                    <input type="text" name="background" id="bg" ref={backgroundColorRef} defaultValue={props.mode == "update"? props.updating.color : ""}/>
                 </div>
                 <div className="row">
                     <label htmlFor="times">times:</label>
