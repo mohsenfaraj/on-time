@@ -126,6 +126,8 @@ useMemo(() => {
 // if times has changed , save it to local storage
 useEffect(() => {
   localStorage.setItem("ontime-data" , JSON.stringify(times));
+  // in case if color is modified , apply it
+  document.documentElement.style.setProperty('--primary',times[activeTimer].color);
 } , [times])
 
 // if active tier is changed , reset timer and recalculate based on times
