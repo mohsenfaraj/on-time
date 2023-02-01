@@ -1,28 +1,24 @@
-import { useState , useEffect } from 'react'
+import { useState , useEffect, useMemo } from 'react'
 import Timer from './timer'
 import AddSet from './addSet'
 import "./style.css"
+
+const UUT_SCHEDULE = [{
+  name : "Daneshkade" ,
+  color: "#326cd8" ,
+  times : ["7:35" , "8:40" , "9:05" , "9:55" , "10:35" , "11:20" , "11:50" , "12:20" ,
+  "12:50" , "13:20" , "13:40" , "14:10" , "14:50" , "15:30" , "15:50" , "16:10" ,
+  "16:25" , "16:45" , "17:05"]
+} , 
+{
+  name:"UUT" ,
+  color : "#d83232" , 
+  times : ["8:20" , "8:45" , "9:35" , "10:15" , "11:00" , "11:30" , "12:00" , "12:30" ,
+  "13:00" , "13:20" , "13:50" , "14:30" , "15:10" , "15:30" , "15:50" , "16:05" ,
+  "16:25" , "16:45" , "17:40" , "18:15" , "19:10"]
+}]
 function App() {
-  const [times , setTimes] = useState(
-    [
-      {
-        name : "Daneshkade" ,
-        color: "#326cd8" ,
-        times : ["7:35" , "8:40" , "9:05" , "9:55" , "10:35" , "11:20" , "11:50" , "12:20" ,
-        "12:50" , "13:20" , "13:40" , "14:10" , "14:50" , "15:30" , "15:50" , "16:10" ,
-        "16:25" , "16:45" , "17:05"
-      ]
-      } , 
-      {
-        name:"UUT" ,
-        color : "#d83232" , 
-        times : ["8:20" , "8:45" , "9:35" , "10:15" , "11:00" , "11:30" , "12:00" , "12:30" ,
-        "13:00" , "13:20" , "13:50" , "14:30" , "15:10" , "15:30" , "15:50" , "16:05" ,
-        "16:25" , "16:45" , "17:40" , "18:15" , "19:10"
-      ]
-      }
-    ]
-  )
+  const [times , setTimes] = useState([])
   const [activeTimer , setactiveTimer] = useState(0)
   const [addSetWindow , setAddSetWindow] = useState(false)
   const [editWindow , setEditWindow] = useState(false)
@@ -71,6 +67,12 @@ function App() {
     }
   }
 
+  function reset() {
+    localStorage.removeItem("ontime-data")
+    setTimes(UUT_SCHEDULE);
+    setactiveTimer(0);
+  }
+
   function showEditSet(){
     setEditWindow(true);
   }
@@ -110,7 +112,23 @@ function closestTime(hour , min){
     }
     return [-1 , -1] ;
 }
+// fetch data from localstorage on first render
+useMemo(() => {
+  const data = JSON.parse(localStorage.getItem("ontime-data"))
+  if (data) {
+    setTimes(data)
+  }
+  else {
+    setTimes(UUT_SCHEDULE)
+  }
+} , [])
 
+// if times has changed , save it to local storage
+useEffect(() => {
+  localStorage.setItem("ontime-data" , JSON.stringify(times));
+} , [times])
+
+// if active tier is changed , reset timer and recalculate based on times
 useEffect(() => {
   setRemaining(remainingTime())
   // set primary color:
@@ -143,6 +161,7 @@ useEffect(() => {
       <button onClick={showEditSet}>edit set</button>
       <button onClick={removeSet} disabled = {times.length <= 1}>remove set</button>
       <button onClick={showAddSet}>add new set</button>
+      <button onClick={reset}>reset</button>
       <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
       {modal}
     </div>
