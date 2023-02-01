@@ -57,20 +57,24 @@ function App() {
   }
 
   function removeSet(){
-    const newTimes = times.filter((element , index) => {
-      return index !== activeTimer
-    })
-    setTimes(newTimes)
-    // fix out of bound Active Timer problem:
-    if (activeTimer > newTimes.length - 1) {
-      setactiveTimer(activeTimer - 1)
+    if (confirm("are you sure you want to remove this set?")){
+      const newTimes = times.filter((element , index) => {
+        return index !== activeTimer
+      })
+      setTimes(newTimes)
+      // fix out of bound Active Timer problem:
+      if (activeTimer > newTimes.length - 1) {
+        setactiveTimer(activeTimer - 1)
+      }
     }
   }
 
   function reset() {
-    localStorage.removeItem("ontime-data")
-    setTimes(UUT_SCHEDULE);
-    setactiveTimer(0);
+    if (confirm("are you sure to reset data to initial values? all aditional data will be lost.")) {
+      localStorage.removeItem("ontime-data")
+      setTimes(UUT_SCHEDULE);
+      setactiveTimer(0);
+    }
   }
 
   function showEditSet(){
