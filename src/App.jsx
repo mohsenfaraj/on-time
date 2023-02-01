@@ -22,7 +22,7 @@ function App() {
   const [activeTimer , setactiveTimer] = useState(0)
   const [addSetWindow , setAddSetWindow] = useState(false)
   const [editWindow , setEditWindow] = useState(false)
-  const [remaning , setRemaining] = useState(0) ;
+  const [remaining , setRemaining] = useState(0) ;
   function prevTimer(e) {
     if (activeTimer !== 0)
     setactiveTimer(activeTimer - 1) ;
@@ -70,7 +70,7 @@ function App() {
   }
 
   function reset() {
-    if (confirm("are you sure to reset data to initial values? all aditional data will be lost.")) {
+    if (confirm("are you sure to reset data to initial values? all additional data will be lost.")) {
       localStorage.removeItem("ontime-data")
       setTimes(UUT_SCHEDULE);
       setactiveTimer(0);
@@ -116,7 +116,7 @@ function closestTime(hour , min){
     }
     return [-1 , -1] ;
 }
-// fetch data from localstorage on first render
+// fetch data from local storage on first render
 useMemo(() => {
   const data = JSON.parse(localStorage.getItem("ontime-data"))
   if (data) {
@@ -160,7 +160,7 @@ useEffect(() => {
     <div>
       <div className="header">
       <h1>[On-Time]</h1>
-      <p>Never miss any buss again!</p>
+      <p>Never miss any bus again!</p>
       </div>
       <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
       <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
@@ -168,7 +168,7 @@ useEffect(() => {
       <button onClick={removeSet} disabled = {times.length <= 1}>remove set</button>
       <button onClick={showAddSet}>add new set</button>
       <button onClick={reset}>reset</button>
-      <Timer timer = {times[activeTimer]} remaining = {remaning[0]} timeIndex = {remaning[1]}/>
+      <Timer timer = {times[activeTimer]} remaining = {remaining[0]} timeIndex = {remaining[1]}/>
       {modal}
     </div>
   )
