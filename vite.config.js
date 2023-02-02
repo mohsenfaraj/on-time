@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({registerType: 'autoUpdate',
-    includeAssets: ['ontime-192x192.png', 'ontime-512x512.png'],
+    includeAssets: ['ontime192.png', 'ontime512.png'],
       manifest: {
         name: 'On-Time Bus time Tracker',
         short_name: 'On-Time',
@@ -15,12 +15,12 @@ export default defineConfig({
         theme_color: '#ffffff',
         icons: [
           {
-            src: 'ontime-192x192.png',
+            src: 'ontime192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'ontime-512x512.png',
+            src: 'ontime512.png',
             sizes: '512x512',
             type: 'image/png'
           }
