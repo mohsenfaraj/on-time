@@ -170,7 +170,7 @@ useEffect(() => {
       <button onClick={reset}>reset</button>
       <Timer timer = {times[activeTimer]} remaining = {remaining[0]} timeIndex = {remaining[1]}/>
       <div className="footer">
-      <p>Coded by Mohsen Farajollahi, <a href="https://github.com/mohsenfaraj/on-time" target="_blank">star on github</a></p>
+      <p>Coded by Mohsen Farajollahi  <a href="https://github.com/mohsenfaraj/on-time" target="_blank">[github]</a></p>
       </div>
       {modal}
     </div>
