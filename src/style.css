@@ -50,6 +50,9 @@ button:disabled , input[type="submit"]:disabled , input[type="button"]:disabled 
 }
 .active span {
     background-color: var(--primary);
+    animation: glow 2s infinite alternate ease-in-out;
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
 }
 .header {
     margin-top: 20px;
@@ -106,4 +109,16 @@ button:disabled , input[type="submit"]:disabled , input[type="button"]:disabled 
     font-weight: bolder;
     font-size: 32px;
     color: var(--primary);
+}
+.countdownbox p {
+    color: #444;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0 0 transparent;
+      }
+      100% {
+        box-shadow:0 0 10px var(--primary);
+      }
 }
