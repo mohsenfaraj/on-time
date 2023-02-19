@@ -158,16 +158,20 @@ useEffect(() => {
   }
   return (
     <div>
+      <div className="nav">
+      <button onClick={showAddSet}>add set</button>
+        <button onClick={showEditSet}>edit set</button>
+        <button onClick={removeSet} disabled = {times.length <= 1}>remove set</button>
+        <button onClick={reset}>reset</button>
+      </div>
       <div className="header">
       <h1>[On-Time]</h1>
       <p>Never miss any bus again!</p>
       </div>
-      <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
-      <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
-      <button onClick={showEditSet}>edit set</button>
-      <button onClick={removeSet} disabled = {times.length <= 1}>remove set</button>
-      <button onClick={showAddSet}>add new set</button>
-      <button onClick={reset}>reset</button>
+      <div className="row">
+        <button onClick={prevTimer} disabled={activeTimer == 0}>previous</button>
+        <button onClick={nextTimer} disabled={activeTimer + 1 == times.length}>next</button>
+      </div>
       <Timer timer = {times[activeTimer]} remaining = {remaining[0]} timeIndex = {remaining[1]}/>
       <div className="footer">
       <p>Coded by Mohsen Farajollahi  <a href="https://github.com/mohsenfaraj/on-time" target="_blank">[github]</a></p>
