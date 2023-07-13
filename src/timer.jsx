@@ -5,7 +5,8 @@ function Timer(props) {
     )
     return (
         <div className="container">
-            <h2>{props.timer.name}</h2>
+            <h2>from : {props.timer.origin}</h2>
+            <h2>to : {props.timer.destiny}</h2>
             <Countdown remaining={props.remaining} />
             <div className="grid">
             <ul>{times}</ul>

@@ -1,39 +1,22 @@
-import { useState , useEffect, useMemo } from 'react'
+import { useState , useEffect, useMemo , useRef } from 'react'
 import Timer from './timer'
 import AddSet from './addSet'
 import "./style.css"
-
-const UUT_SCHEDULE = [{
-  name : "Daneshkade" ,
-  color: "#326cd8" ,
-  times : ["7:35" , "8:40" , "9:05" , "9:55" , "10:35" , "11:20" , "11:50" , "12:20" ,
-  "13:20" , "13:40" , "14:10" , "14:50" , "15:30" , "15:50" , "16:10" ,
-  "16:35" , "17:05"]
-} , 
-{
-  name:"UUT" ,
-  color : "#d83232" , 
-  times : ["8:20" , "8:45" , "9:35" , "10:15" , "11:00" , "11:30" , "12:00" , "12:30" ,
-  "13:00" , "13:20" , "13:50" , "14:30" , "15:10" , "15:30" , "15:50" , "16:15" ,
-  "16:45" , "17:40" , "18:15" , "19:10"]
-} ,
-{
-  name:"Isaar" ,
-  color:"#0E6655" , 
-  times : ["7:35" , "9:05" , "10:35" , "13:00" , "15:00" ,"17:00"]
-} ,
-{
-  name:"UUT (Isaar)" ,
-  color:"#6C3483" , 
-  times:["8:45" , "10:15" , "12:35" , "14:30" , "16:15" , "17:45" , "19:10"]
-}
-]
 function App() {
+  const timer = useRef()
   const [times , setTimes] = useState([])
-  const [activeTimer , setactiveTimer] = useState(0)
+  const [activeTimer , setactiveTimer] = useState()
   const [addSetWindow , setAddSetWindow] = useState(false)
   const [editWindow , setEditWindow] = useState(false)
   const [remaining , setRemaining] = useState(0) ;
+  const [repos , setrepos] = useState(["UUTBusTimes.json"])
+
+  async function getTimes() {
+    const answer = await fetch(repos[0]) ;
+    const jsonobj = await answer.json() ;
+    return jsonobj ;
+  }
+
   function prevTimer(e) {
     if (activeTimer !== 0)
     setactiveTimer(activeTimer - 1) ;
@@ -128,18 +111,22 @@ function closestTime(hour , min){
     return [-1 , -1] ;
 }
 // fetch data from local storage on first render
-useMemo(() => {
+useMemo(async () => {
   const data = JSON.parse(localStorage.getItem("ontime-data"))
-  if (data) {
+  if (data && data.length > 0) {
     setTimes(data)
+    setactiveTimer(0)
   }
   else {
-    setTimes(UUT_SCHEDULE)
+    const times2 = await getTimes() ;
+    setTimes(times2.times)
+    setactiveTimer(0)
   }
 } , [])
 
 // if times has changed , save it to local storage
 useEffect(() => {
+  if (times.length == 0) return ;
   localStorage.setItem("ontime-data" , JSON.stringify(times));
   // in case if color is modified , apply it
   document.documentElement.style.setProperty('--primary',times[activeTimer].color);
@@ -147,15 +134,16 @@ useEffect(() => {
 
 // if active tier is changed , reset timer and recalculate based on times
 useEffect(() => {
+  if (times.length == 0) return ;
   setRemaining(remainingTime())
   // set primary color:
   document.documentElement.style.setProperty('--primary',times[activeTimer].color);
-  const timer = setInterval(() => {
+  timer.current = setInterval(() => {
     setRemaining(remainingTime())
   }, 1000);
 
   return () => {
-    clearInterval(timer)
+    clearInterval(timer.current)
   }
 }, [activeTimer])
 
@@ -167,6 +155,8 @@ useEffect(() => {
   else if (editWindow) {
     modal = <AddSet close={closeModal} updateSet={updateSet} updating={times[activeTimer]} mode ="update" />
   }
+
+  if (times.length > 0) {
   return (
     <div>
       <div className="nav">
@@ -190,6 +180,8 @@ useEffect(() => {
       {modal}
     </div>
   )
+  }
+  else return "Loading..."
 }
 
 export default App
