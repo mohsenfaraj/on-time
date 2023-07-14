@@ -61,7 +61,9 @@ function Timer({ timer, current }) {
         className={index === timeIndex ? "active timebox" : "timebox"}
         ref={index === timeIndex ? activebox : null}
       >
-        <span>{time}</span>
+        <span>
+          {remainingTime(time) == "PASS" ? <del>{time}</del> : <>{time}</>}
+        </span>
         <span>{remainingTime(time)}</span>
       </div>
     </li>
