@@ -30,7 +30,7 @@ function Timer({ timer, current }) {
     if (currentInt >= target) return "PASS";
     const remainingTime = target - currentInt;
     if (remainingTime / 60 > 1) {
-      return "> 1hr";
+      return `> ${Math.floor(remainingTime / 60)}hr`;
     } else if (remainingTime < 1) {
       return "< 1Min";
     } else {
