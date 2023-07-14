@@ -1,17 +1,14 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import tinycolor from "tinycolor2";
 import Timer from "./timer";
-import AddSet from "./addSet";
 import "./style.css";
 let autoupdate = true;
 
 function App() {
   const timer = useRef();
   const [times, setTimes] = useState([]);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTimer, setactiveTimer] = useState();
-  const [addSetWindow, setAddSetWindow] = useState(false);
-  const [editWindow, setEditWindow] = useState(false);
-  const [remaining, setRemaining] = useState(0);
   const [repos, setrepos] = useState(["UUTBusTimes.json"]);
   const [origins, setorigins] = useState([]);
   const [origin, setorigin] = useState();
@@ -74,52 +71,17 @@ function App() {
     newTimes[activeTimer] = timeset;
     setTimes(newTimes);
   }
-
-  function remainingTime() {
-    const today = new Date();
-    const hour = today.getHours();
-    const min = today.getMinutes();
-    const second = today.getSeconds();
-    const [target, index] = closestTime(hour, min);
-    if (target == -1) {
-      return [-1, -1];
-    } else {
-      const [targetHour, targetMin] = target.split(":");
-      const remainingTime =
-        (targetHour * 60 + parseInt(targetMin) - hour * 60 - parseInt(min)) *
-          60 -
-        second;
-      return [remainingTime, index];
-    }
-  }
-
-  function closestTime(hour, min) {
-    const timeList = times[activeTimer].times;
-    const total = hour * 60 + parseInt(min);
-    for (let i = 0; i < timeList.length; i++) {
-      const [targetHour, targetMin] = timeList[i].split(":");
-      const target = targetHour * 60 + parseInt(targetMin);
-      if (total < target) {
-        return [timeList[i], i];
-      } else if (total == target && i < timeList.length - 1) {
-        return [timeList[i + 1], i + 1];
-      } else if (i == timeList.length && total < target) {
-        return [timeList[i], i];
-      }
-    }
-    return [-1, -1];
-  }
   // fetch data from local storage on first render
   useMemo(async () => {
-    const data = JSON.parse(localStorage.getItem("ontime-data"));
-    if (data && data.length > 0) {
-      setTimes(data);
-      setactiveTimer(0);
-    } else {
-      const times2 = await getTimes();
-      setTimes(times2.times);
-      setactiveTimer(0);
-    }
+    // const data = JSON.parse(localStorage.getItem("ontime-data"));
+    // if (data && data.length > 0) {
+    //   setTimes(data);
+    //   setactiveTimer(0);
+    // } else {
+    const times2 = await getTimes();
+    setTimes(times2.times);
+    setactiveTimer(0);
+    // }
   }, []);
 
   // if times has changed , save it to local storage
@@ -160,7 +122,7 @@ function App() {
   // if active tier is changed , reset timer and recalculate based on times
   useEffect(() => {
     if (times.length == 0) return;
-    setRemaining(remainingTime());
+    setCurrentTime(new Date());
     // set primary color:
     document.documentElement.style.setProperty(
       "--primary",
@@ -171,28 +133,15 @@ function App() {
       "--secondary",
       tinycolor(times[activeTimer].color).darken(20)
     );
+
     timer.current = setInterval(() => {
-      setRemaining(remainingTime());
+      setCurrentTime(new Date());
     }, 1000 * 60);
 
     return () => {
       clearInterval(timer.current);
     };
   }, [activeTimer]);
-
-  let modal = "";
-  if (addSetWindow) {
-    modal = <AddSet close={closeModal} addNewSet={addNewSet} mode="add" />;
-  } else if (editWindow) {
-    modal = (
-      <AddSet
-        close={closeModal}
-        updateSet={updateSet}
-        updating={times[activeTimer]}
-        mode="update"
-      />
-    );
-  }
 
   if (times.length > 0) {
     return (
@@ -249,12 +198,7 @@ function App() {
           </div>
         </div>
         <div className="container">
-          <Timer
-            timer={times[activeTimer]}
-            remaining={remaining[0]}
-            timeIndex={remaining[1]}
-          />
-          {modal}
+          <Timer timer={times[activeTimer]} current={currentTime} />
         </div>
       </div>
     );
