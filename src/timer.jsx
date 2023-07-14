@@ -9,7 +9,9 @@ function Timer(props) {
   ));
   return (
     <>
-      <h2>Daneshkadeh - UUT</h2>
+      <h2>
+        {props.timer.origin} - {props.timer.destiny}
+      </h2>
       <div className="timesContainer">
         <ul>{times}</ul>
       </div>

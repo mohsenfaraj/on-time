@@ -1,7 +1,10 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import tinycolor from "tinycolor2";
 import Timer from "./timer";
 import AddSet from "./addSet";
 import "./style.css";
+let autoupdate = true;
+
 function App() {
   const timer = useRef();
   const [times, setTimes] = useState([]);
@@ -10,6 +13,49 @@ function App() {
   const [editWindow, setEditWindow] = useState(false);
   const [remaining, setRemaining] = useState(0);
   const [repos, setrepos] = useState(["UUTBusTimes.json"]);
+  const [origins, setorigins] = useState([]);
+  const [origin, setorigin] = useState();
+  const [destiny, setDestiny] = useState();
+  const [destinies, setDestinies] = useState([]);
+
+  function onlyUnique(array) {
+    let withdp = array.map((item) => {
+      return item.origin;
+    });
+    let withoutdp = withdp.filter((value, index, array) => {
+      return array.indexOf(value) === index;
+    });
+    return withoutdp;
+  }
+
+  function getOrigins() {
+    const options = onlyUnique(times);
+    setorigins(options);
+  }
+
+  function getDestinies() {
+    const destinies = times
+      .filter((item) => {
+        return item.origin == origin;
+      })
+      .map((item) => item.destiny);
+    setDestinies(destinies);
+  }
+
+  function handleOriginChange(e) {
+    setorigin(e.target.value);
+  }
+
+  function handleDestinyChange(e) {
+    setDestiny(e.target.value);
+  }
+
+  function reverse() {
+    autoupdate = false;
+    const newDestiny = origin;
+    setorigin(destiny);
+    setDestiny(newDestiny);
+  }
 
   async function getTimes() {
     const answer = await fetch(repos[0]);
@@ -27,31 +73,6 @@ function App() {
     const newTimes = [...times];
     newTimes[activeTimer] = timeset;
     setTimes(newTimes);
-  }
-
-  function removeSet() {
-    if (confirm("are you sure you want to remove this set?")) {
-      const newTimes = times.filter((element, index) => {
-        return index !== activeTimer;
-      });
-      setTimes(newTimes);
-      // fix out of bound Active Timer problem:
-      if (activeTimer > newTimes.length - 1) {
-        setactiveTimer(activeTimer - 1);
-      }
-    }
-  }
-
-  function reset() {
-    if (
-      confirm(
-        "are you sure to reset data to initial values? all additional data will be lost."
-      )
-    ) {
-      localStorage.removeItem("ontime-data");
-      setTimes(UUT_SCHEDULE);
-      setactiveTimer(0);
-    }
   }
 
   function remainingTime() {
@@ -110,7 +131,31 @@ function App() {
       "--primary",
       times[activeTimer].color
     );
+    getOrigins();
   }, [times]);
+
+  useEffect(() => {
+    setorigin(origins[0]);
+  }, [origins]);
+
+  useEffect(() => {
+    getDestinies();
+  }, [origin]);
+
+  useEffect(() => {
+    if (autoupdate) {
+      setDestiny(destinies[0]);
+    }
+    autoupdate = true;
+  }, [destinies]);
+
+  useEffect(() => {
+    times.forEach((item, index) => {
+      if (item.origin == origin && item.destiny == destiny) {
+        setactiveTimer(index);
+      }
+    });
+  }, [origin, destiny]);
 
   // if active tier is changed , reset timer and recalculate based on times
   useEffect(() => {
@@ -121,9 +166,14 @@ function App() {
       "--primary",
       times[activeTimer].color
     );
+    // set secondary color :
+    document.documentElement.style.setProperty(
+      "--secondary",
+      tinycolor(times[activeTimer].color).darken(20)
+    );
     timer.current = setInterval(() => {
       setRemaining(remainingTime());
-    }, 1000);
+    }, 1000 * 60);
 
     return () => {
       clearInterval(timer.current);
@@ -154,27 +204,47 @@ function App() {
           </div>
           <div className="locations">
             <div className="line">
-              <div className="dot blue"></div>
+              <div className="dot gray"></div>
               <div className="dashed"></div>
-              <div className="dot green"></div>
+              <div className="dot blue"></div>
             </div>
             <div className="select">
               <label htmlFor="origin">From</label>
-              <select name="origin" id="origin">
-                <option value="Daneshkade">Daneshkadeh</option>
-                <option value="Isar">Isar</option>
-                <option value="Daneshgah">Daneshgah</option>
+              <select
+                name="origin"
+                id="origin"
+                onChange={handleOriginChange}
+                value={origin}
+              >
+                {origins.map((item) => {
+                  return (
+                    <option value={item} key={item + "destiny"}>
+                      {item}
+                    </option>
+                  );
+                })}
               </select>
               <hr />
               <label htmlFor="destiny">To</label>
-              <select name="destiny" id="destiny">
-                <option value="Daneshkade">Daneshkadeh</option>
-                <option value="Isar">Isar</option>
-                <option value="Daneshgah">Daneshgah</option>
+              <select
+                name="destiny"
+                id="destiny"
+                onChange={handleDestinyChange}
+                value={destiny}
+              >
+                {destinies.map((item) => {
+                  return (
+                    <option value={item} key={"origin" + item}>
+                      {item}
+                    </option>
+                  );
+                })}
               </select>
             </div>
-            <div className="alt">
-              <i className="fas fa-exchange-alt fa-rotate-270"></i>
+            <div className="alt" onClick={reverse}>
+              <button>
+                <i className="fas fa-exchange-alt fa-rotate-270"></i>
+              </button>
             </div>
           </div>
         </div>

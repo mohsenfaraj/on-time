@@ -2,7 +2,7 @@
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css");
 :root {
   --primary: #326cd8;
-  --secondary: #2956aa;
+  --secondary: #204486;
 }
 * {
   font-family: "Open Sans", sans-serif;
@@ -111,8 +111,8 @@ input[type="button"]:disabled {
   background-color: var(--primary);
   border-radius: 50%;
 }
-.locations .line .green {
-  background-color: #1f8b0a;
+.locations .line .gray {
+  background-color: #777;
 }
 .locations .line .dashed {
   content: "";
@@ -138,8 +138,8 @@ input[type="button"]:disabled {
   font-size: 18px;
   color: #888;
   background-color: #eee;
-  padding: 15px;
-  border-radius: 5px;
+  border-radius: 10px;
+  margin: 0;
 }
 .locations .select {
   flex: 80%;
