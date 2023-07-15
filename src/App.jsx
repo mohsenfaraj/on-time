@@ -5,7 +5,7 @@ import Timer from "./timer";
 import "./style.css";
 import SelectLocation from "./SelectLocation";
 import Settings from "./Settings";
-const TIMES_LINK = "UUTBusTimes.json";
+const TIMES_LINK = "./UUTBusTimes.json";
 function App() {
   const timer = useRef();
   const [times, setTimes] = useState([]);
