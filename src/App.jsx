@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import tinycolor from "tinycolor2";
 import Timer from "./timer";
 import "./style.css";
-let autoupdate = true;
+import SelectLocation from "./SelectLocation";
 
 function App() {
   const timer = useRef();
@@ -14,6 +14,7 @@ function App() {
   const [origin, setorigin] = useState();
   const [destiny, setDestiny] = useState();
   const [destinies, setDestinies] = useState([]);
+  const autoupdate = useRef(true);
 
   function onlyUnique(array) {
     let withdp = array.map((item) => {
@@ -39,55 +40,20 @@ function App() {
     setDestinies(destinies);
   }
 
-  function handleOriginChange(e) {
-    setorigin(e.target.value);
-  }
-
-  function handleDestinyChange(e) {
-    setDestiny(e.target.value);
-  }
-
-  function reverse() {
-    autoupdate = false;
-    const newDestiny = origin;
-    setorigin(destiny);
-    setDestiny(newDestiny);
-  }
-
   async function getTimes() {
     const answer = await fetch(repos[0]);
     const jsonobj = await answer.json();
     return jsonobj;
   }
 
-  function addNewSet(timeset) {
-    const newTimes = [...times];
-    newTimes.push(timeset);
-    setTimes(newTimes);
-  }
-
-  function updateSet(timeset) {
-    const newTimes = [...times];
-    newTimes[activeTimer] = timeset;
-    setTimes(newTimes);
-  }
-  // fetch data from local storage on first render
   useMemo(async () => {
-    // const data = JSON.parse(localStorage.getItem("ontime-data"));
-    // if (data && data.length > 0) {
-    //   setTimes(data);
-    //   setactiveTimer(0);
-    // } else {
     const times2 = await getTimes();
     setTimes(times2.times);
     setactiveTimer(0);
-    // }
   }, []);
 
-  // if times has changed , save it to local storage
   useEffect(() => {
     if (times.length == 0) return;
-    localStorage.setItem("ontime-data", JSON.stringify(times));
     // in case if color is modified , apply it
     document.documentElement.style.setProperty(
       "--primary",
@@ -105,10 +71,10 @@ function App() {
   }, [origin]);
 
   useEffect(() => {
-    if (autoupdate) {
+    if (autoupdate.current) {
       setDestiny(destinies[0]);
     }
-    autoupdate = true;
+    autoupdate.current = true;
   }, [destinies]);
 
   useEffect(() => {
@@ -151,51 +117,15 @@ function App() {
             <i className="fas fa-bus fa-2x"></i>
             <h1>[On-Time]</h1>
           </div>
-          <div className="locations">
-            <div className="line">
-              <div className="dot gray"></div>
-              <div className="dashed"></div>
-              <div className="dot blue"></div>
-            </div>
-            <div className="select">
-              <label htmlFor="origin">From</label>
-              <select
-                name="origin"
-                id="origin"
-                onChange={handleOriginChange}
-                value={origin}
-              >
-                {origins.map((item) => {
-                  return (
-                    <option value={item} key={item + "destiny"}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-              <hr />
-              <label htmlFor="destiny">To</label>
-              <select
-                name="destiny"
-                id="destiny"
-                onChange={handleDestinyChange}
-                value={destiny}
-              >
-                {destinies.map((item) => {
-                  return (
-                    <option value={item} key={"origin" + item}>
-                      {item}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
-            <div className="alt" onClick={reverse}>
-              <button>
-                <i className="fas fa-exchange-alt fa-rotate-270"></i>
-              </button>
-            </div>
-          </div>
+          <SelectLocation
+            setDestiny={setDestiny}
+            setorigin={setorigin}
+            origin={origin}
+            origins={origins}
+            destiny={destiny}
+            destinies={destinies}
+            autoupdate={autoupdate}
+          />
         </div>
         <div className="container">
           <Timer timer={times[activeTimer]} current={currentTime} />
