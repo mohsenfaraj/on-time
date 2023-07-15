@@ -1,16 +1,17 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useLayoutEffect } from "react";
 import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 import tinycolor from "tinycolor2";
 import Timer from "./timer";
 import "./style.css";
 import SelectLocation from "./SelectLocation";
-
+import Settings from "./Settings";
+const TIMES_LINK = "UUTBusTimes.json";
 function App() {
   const timer = useRef();
   const [times, setTimes] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTimer, setactiveTimer] = useState();
-  const [repos, setrepos] = useState(["UUTBusTimes.json"]);
+  const [repos, setrepos] = useState([TIMES_LINK]);
   const [origins, setorigins] = useState([]);
   const [origin, setorigin] = useState();
   const [destiny, setDestiny] = useState();
@@ -110,7 +111,7 @@ function App() {
     };
   }, [activeTimer]);
 
-  const css = `.header{min-height:200px;!important}`;
+  const css = `.header{min-height:100px;!important}`;
   if (times.length > 0) {
     return (
       <BrowserRouter>
@@ -151,7 +152,6 @@ function App() {
                 element={
                   <div className="settingsHead">
                     <style>{css}</style>
-                    <h1>[Settings]</h1>
                   </div>
                 }
               />
@@ -165,7 +165,10 @@ function App() {
                   <Timer timer={times[activeTimer]} current={currentTime} />
                 }
               />
-              <Route path="/on-time/settings" element={<p>Settings Here!</p>} />
+              <Route
+                path="/on-time/settings"
+                element={<Settings repos={repos} setrepos={setrepos} />}
+              />
             </Routes>
           </div>
         </div>

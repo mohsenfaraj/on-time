@@ -241,13 +241,67 @@ input[type="button"]:disabled {
   cursor: pointer;
 }
 .settingsHead {
+  height: 100%;
+  position: relative;
   color: #fff;
   text-align: center;
-  margin-top: 20px;
   letter-spacing: 6px;
+  margin-top: 30px;
 }
 .settingsHead h1 {
   text-transform: uppercase;
+  font-size: 60px;
+  opacity: 0.1;
+}
+.settings h1 {
+  font-size: 32px;
+  color: var(--primary);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--primary);
+  margin-bottom: 30px;
+  font-weight: bolder;
+}
+.repos {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 10px auto;
+  gap: 10px;
+}
+.repo {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  background-color: #ddd;
+  border: 1px solid #888;
+  box-shadow: 1px 1px #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+.repo button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #252525;
+}
+.repo label {
+  flex: 5%;
+}
+.repo input[type="text"] {
+  background-color: #ffffff7c;
+  border: 1px solid #ccc;
+  height: 35px;
+  padding: 3px 10px;
+  flex: 40%;
+  font-family: monospace;
+}
+button.red {
+  background-color: #d12f38;
+}
+button.red:disabled {
+  opacity: 0.5;
 }
 @keyframes glow {
   0% {
