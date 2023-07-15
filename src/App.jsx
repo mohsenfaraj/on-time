@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { BrowserRouter, Routes, Route, Outlet, Link } from "react-router-dom";
 import tinycolor from "tinycolor2";
 import Timer from "./timer";
 import "./style.css";
@@ -109,28 +110,66 @@ function App() {
     };
   }, [activeTimer]);
 
+  const css = `.header{min-height:200px;!important}`;
   if (times.length > 0) {
     return (
-      <div>
-        <div className="header">
-          <div className="apptitle">
-            <i className="fas fa-bus fa-2x"></i>
-            <h1>[On-Time]</h1>
+      <BrowserRouter>
+        <div>
+          <div className="header">
+            <div className="apptitle">
+              <div className="logo">
+                <Link to={"/on-time/"}>
+                  <i className="fas fa-bus fa-2x"></i>
+                  <h1>[On-Time]</h1>
+                </Link>
+              </div>
+
+              <div className="settingsbtn">
+                <Link to={"/on-time/settings"}>
+                  <i className="fas fa-cog fa-2x"></i>
+                  <p>Settings</p>
+                </Link>
+              </div>
+            </div>
+            <Routes>
+              <Route
+                path="/on-time/"
+                element={
+                  <SelectLocation
+                    setDestiny={setDestiny}
+                    setorigin={setorigin}
+                    origin={origin}
+                    origins={origins}
+                    destiny={destiny}
+                    destinies={destinies}
+                    autoupdate={autoupdate}
+                  />
+                }
+              />
+              <Route
+                path="/on-time/settings"
+                element={
+                  <div className="settingsHead">
+                    <style>{css}</style>
+                    <h1>[Settings]</h1>
+                  </div>
+                }
+              />
+            </Routes>
           </div>
-          <SelectLocation
-            setDestiny={setDestiny}
-            setorigin={setorigin}
-            origin={origin}
-            origins={origins}
-            destiny={destiny}
-            destinies={destinies}
-            autoupdate={autoupdate}
-          />
+          <div className="container">
+            <Routes>
+              <Route
+                path="/on-time"
+                element={
+                  <Timer timer={times[activeTimer]} current={currentTime} />
+                }
+              />
+              <Route path="/on-time/settings" element={<p>Settings Here!</p>} />
+            </Routes>
+          </div>
         </div>
-        <div className="container">
-          <Timer timer={times[activeTimer]} current={currentTime} />
-        </div>
-      </div>
+      </BrowserRouter>
     );
   } else return "Loading...";
 }
