@@ -5,7 +5,7 @@ import Timer from "./timer";
 import "./style.css";
 import SelectLocation from "./SelectLocation";
 import Settings from "./Settings";
-const TIMES_LINK = ["./UUTBusTimes.json", "./test.json"];
+const TIMES_LINK = ["./UUTBusTimes.json"];
 function App() {
   const timer = useRef();
   const [times, setTimes] = useState([]);
@@ -44,6 +44,7 @@ function App() {
   }
 
   async function getTimes() {
+    // TODO: handle fetching errors
     let downloadedTimes = [];
     let names = [];
     for (let i = 0; i < repos.length; i++) {
@@ -57,6 +58,8 @@ function App() {
   }
 
   useLayoutEffect(() => {
+    //TODO: sort times before setting it into state (or sort in timer.jsx)
+    //TODO: get data from localstorage and update it after fetch
     (async () => {
       // clear destiny and origin if reos has changed:
       setDestiny("");
@@ -197,6 +200,7 @@ function App() {
         </div>
       </BrowserRouter>
     );
+    // TODO: create a loading page
   } else return "Loading...";
 }
 
