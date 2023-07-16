@@ -5,13 +5,14 @@ import Timer from "./timer";
 import "./style.css";
 import SelectLocation from "./SelectLocation";
 import Settings from "./Settings";
-const TIMES_LINK = "./UUTBusTimes.json";
+const TIMES_LINK = ["./UUTBusTimes.json", "./test.json"];
 function App() {
   const timer = useRef();
   const [times, setTimes] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [activeTimer, setactiveTimer] = useState();
-  const [repos, setrepos] = useState([TIMES_LINK]);
+  const [repos, setrepos] = useState(TIMES_LINK);
+  const [repoNames, setRepoNames] = useState([]);
   const [origins, setorigins] = useState([]);
   const [origin, setorigin] = useState();
   const [destiny, setDestiny] = useState();
@@ -43,16 +44,32 @@ function App() {
   }
 
   async function getTimes() {
-    const answer = await fetch(repos[0]);
-    const jsonobj = await answer.json();
-    return jsonobj;
+    let downloadedTimes = [];
+    let names = [];
+    for (let i = 0; i < repos.length; i++) {
+      const answer = await fetch(repos[i]);
+      const jsonobj = await answer.json();
+      names.push(jsonobj.name);
+      downloadedTimes.push(jsonobj);
+    }
+    setRepoNames(names);
+    return downloadedTimes;
   }
 
-  useMemo(async () => {
-    const times2 = await getTimes();
-    setTimes(times2.times);
-    setactiveTimer(0);
-  }, []);
+  useLayoutEffect(() => {
+    (async () => {
+      // clear destiny and origin if reos has changed:
+      setDestiny("");
+      setorigin("");
+      const times2 = await getTimes();
+      let timeList = [];
+      for (let i = 0; i < times2.length; i++) {
+        timeList = [...timeList, ...times2[i].times];
+      }
+      setTimes(timeList);
+      setactiveTimer(0);
+    })();
+  }, [repos]);
 
   useEffect(() => {
     if (times.length == 0) return;
@@ -87,7 +104,7 @@ function App() {
     });
   }, [origin, destiny]);
 
-  // if active tier is changed , reset timer and recalculate based on times
+  // if active timer is changed , reset timer and recalculate based on times
   useEffect(() => {
     if (times.length == 0) return;
     setCurrentTime(new Date());
@@ -167,7 +184,13 @@ function App() {
               />
               <Route
                 path="/on-time/settings"
-                element={<Settings repos={repos} setrepos={setrepos} />}
+                element={
+                  <Settings
+                    repos={repos}
+                    setrepos={setrepos}
+                    names={repoNames}
+                  />
+                }
               />
             </Routes>
           </div>
