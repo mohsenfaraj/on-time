@@ -39,7 +39,6 @@ export default defineConfig({
               },
             },
           },
-          ,
           {
             urlPattern: /^https:\/\/cdnjs\.cloudflare\.com\/.*/i,
             handler: "CacheFirst",
