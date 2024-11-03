@@ -1,15 +1,16 @@
 import { useState, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Timer from "./timer";
+import Timer from "./Timer";
+// @ts-expect-error
 import tinycolor from "tinycolor2";
 import "./style.css";
 import Settings from "./Settings";
 import { useEffect } from "react";
 import SelectLocation from "./SelectLocation";
-import { loadTimes } from "./xlsxloader";
+import { loadTimes, scheduleType } from "./xlsxLoader";
 const TIMES_LINK = ["./UUT-BUS.xlsx"];
 function App() {
-  const [times, setTimes] = useState([]);
+  const [times, setTimes] = useState<scheduleType[]>([]);
   const [activeTimer, setactiveTimer] = useState(0);
   const [repos, setrepos] = useState(TIMES_LINK);
 
@@ -62,7 +63,7 @@ function App() {
                   <SelectLocation
                     times={times}
                     activeTimer={activeTimer}
-                    setactiveTimer={setactiveTimer}
+                    setActiveTimer={setactiveTimer}
                   />
                 }
               />
@@ -84,7 +85,7 @@ function App() {
               />
               <Route
                 path="/on-time/settings"
-                element={<Settings repos={repos} setrepos={setrepos} />}
+                element={<Settings repos={repos} setRepos={setrepos} />}
               />
             </Routes>
           </div>

@@ -1,6 +1,10 @@
-import React from "react";
-
-export default function Repo({ name, link, remove, disabled }) {
+type props = {
+  name: number;
+  link: string;
+  remove: (a: string) => void;
+  disabled: boolean;
+};
+export default function Repo({ name, link, remove, disabled }: props) {
   return (
     <div className="repo">
       <label>{name}</label>

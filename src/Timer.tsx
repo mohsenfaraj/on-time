@@ -1,35 +1,34 @@
 import { useEffect, useRef, useState, memo, useCallback } from "react";
-
-function Timer({ timer }) {
+import { scheduleType } from "./xlsxLoader";
+function Timer({ timer }: { timer: scheduleType }) {
   const [current, setCurrent] = useState(new Date());
   const [timeIndex, setTimeIndex] = useState(0);
-  const timerRef = useRef();
+  const timerRef = useRef(0);
 
+  type closestTime = (hour: number, min: number) => number[];
   // This function only depends on `timer.times`, so we use useCallback to avoid re-creating it.
   const closestTime = useCallback(
-    (hour, min) => {
+    (hour: number, min: number): [string, number] => {
       const timeList = timer.times;
-      const total = hour * 60 + parseInt(min);
+      const total = hour * 60 + min;
       for (let i = 0; i < timeList.length; i++) {
         const [targetHour, targetMin] = timeList[i].split(":");
-        const target = targetHour * 60 + parseInt(targetMin);
+        const target = parseInt(targetHour) * 60 + parseInt(targetMin);
         if (total < target) {
           return [timeList[i], i];
         } else if (total === target && i < timeList.length - 1) {
           return [timeList[i + 1], i + 1];
         }
       }
-      return [-1, -1];
+      return ["-1", -1];
     },
     [timer.times]
   );
 
   const calcRemainingTime = useCallback(
-    (time) => {
+    (time: string) => {
       if (!time) return;
-      let [hour, min] = time.split(":");
-      hour = parseInt(hour);
-      min = parseInt(min);
+      let [hour, min] = time.split(":").map((item) => parseInt(item));
       const currentInt =
         current.getHours() * 3600 +
         current.getMinutes() * 60 +

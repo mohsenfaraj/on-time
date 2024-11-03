@@ -1,14 +1,23 @@
-import React from "react";
-import { useMemo } from "react";
-export default function SelectLocation({ times, activeTimer, setactiveTimer }) {
+import React, { useMemo } from "react";
+import { scheduleType } from "./xlsxLoader";
+type props = {
+  times: scheduleType[];
+  activeTimer: number;
+  setActiveTimer: React.Dispatch<React.SetStateAction<number>>;
+};
+export default function SelectLocation({
+  times,
+  activeTimer,
+  setActiveTimer,
+}: props) {
   const titles = useMemo(() => {
     return times.map((item) => {
       return item.origin;
     });
   }, [times]);
 
-  function handleLocationSwitch(index) {
-    setactiveTimer(index);
+  function handleLocationSwitch(index: number) {
+    setActiveTimer(index);
   }
 
   return (

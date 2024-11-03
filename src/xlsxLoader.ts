@@ -1,7 +1,13 @@
 import * as XLSX from "xlsx";
 
-export async function loadTimes(urls) {
-  const data = [];
+export type scheduleType = {
+  origin: string;
+  destiny: string;
+  times: string[];
+};
+
+export async function loadTimes(urls: string[]) {
+  const data: scheduleType[] = [];
   const times = await Promise.all(
     urls.map(async (url) => {
       try {
@@ -52,7 +58,7 @@ export async function loadTimes(urls) {
 }
 
 // Helper function to format time strings to HH:MM
-function formatTime(time) {
+function formatTime(time: string) {
   if (typeof time === "number") {
     const totalMinutes = Math.round(time * 24 * 60);
     const hours = String(Math.floor(totalMinutes / 60)).padStart(2, "0");

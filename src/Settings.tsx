@@ -1,12 +1,18 @@
 import Repo from "./Repo";
 
-export default function Settings({ repos, setrepos }) {
-  function remove(link) {
+type props = {
+  repos: string[];
+  setRepos: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export default function Settings({ repos, setRepos }: props) {
+  function remove(link: string) {
     const newRepos = repos.filter((item) => {
       return item !== link;
     });
-    setrepos(newRepos);
+    setRepos(newRepos);
   }
+
   return (
     <div className="settings">
       <h1>تنظیمات</h1>
