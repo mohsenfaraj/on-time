@@ -1,6 +1,6 @@
 import Repo from "./Repo";
 
-export default function Settings({ repos, setrepos, names }) {
+export default function Settings({ repos, setrepos }) {
   function remove(link) {
     const newRepos = repos.filter((item) => {
       return item !== link;
@@ -19,7 +19,7 @@ export default function Settings({ repos, setrepos, names }) {
                 link={item}
                 remove={remove}
                 disabled={repos.length == 1}
-                name={names[index]}
+                name={index}
               />
             );
           })}

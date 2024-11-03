@@ -1,73 +1,31 @@
 import React from "react";
+import { useMemo } from "react";
 
-export default function SelectLocation({
-  setDestiny,
-  setorigin,
-  origin,
-  destiny,
-  origins,
-  destinies,
-  autoupdate,
-}) {
-  function reverse() {
-    autoupdate.current = false;
-    const newDestiny = origin;
-    setorigin(destiny);
-    setDestiny(newDestiny);
-  }
+export default function SelectLocation({ times, activeTimer, setactiveTimer }) {
+  const titles = useMemo(() => {
+    return times.map((item) => {
+      return item.origin;
+    });
+  }, [times]);
 
-  function handleOriginChange(e) {
-    setorigin(e.target.value);
-  }
-
-  function handleDestinyChange(e) {
-    setDestiny(e.target.value);
+  function handleLocationSwitch(index) {
+    setactiveTimer(index);
   }
 
   return (
     <div className="locations">
-      <div className="line">
-        <div className="dot gray"></div>
-        <div className="dashed"></div>
-        <div className="dot blue"></div>
-      </div>
-      <div className="select">
-        <label htmlFor="origin">From</label>
-        <select
-          name="origin"
-          id="origin"
-          onChange={handleOriginChange}
-          value={origin}
-        >
-          {origins.map((item) => {
-            return (
-              <option value={item} key={item + "destiny"}>
-                {item}
-              </option>
-            );
-          })}
-        </select>
-        <hr />
-        <label htmlFor="destiny">To</label>
-        <select
-          name="destiny"
-          id="destiny"
-          onChange={handleDestinyChange}
-          value={destiny}
-        >
-          {destinies.map((item) => {
-            return (
-              <option value={item} key={"origin" + item}>
-                {item}
-              </option>
-            );
-          })}
-        </select>
-      </div>
-      <div className="alt" onClick={reverse}>
-        <button>
-          <i className="fas fa-exchange-alt fa-rotate-270"></i>
-        </button>
+      <h2>مبدا خود را انتخاب کنید:</h2>
+      <div className="location-selector">
+        {titles.map((title, index) => {
+          return (
+            <button
+              onClick={() => handleLocationSwitch(index)}
+              className={index == activeTimer ? "selected" : ""}
+            >
+              {title}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
