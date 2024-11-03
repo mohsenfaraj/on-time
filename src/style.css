@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css");
 :root {
-  --primary: #326cd8;
-  --secondary: #204486;
+  --primary: hsl(0, 100%, 40%);
+  --secondary: hsl(0, 100%, 30%);
 }
 p {
   direction: rtl;
@@ -58,13 +58,13 @@ input[type="button"]:disabled {
   transition: all 0.5s ease;
 }
 .header {
-  background: var(--primary);
-  background: linear-gradient(0deg, var(--primary), var(--secondary));
+  background-color: var(--primary);
   display: flex;
   flex-direction: column;
   min-height: 350px;
   padding: 20px;
   padding-bottom: 60px;
+  transition: all 0.5s ease;
 }
 .apptitle {
   display: flex;
@@ -208,6 +208,9 @@ input[type="button"]:disabled {
   text-transform: uppercase;
   font-size: 60px;
   opacity: 0.1;
+}
+.settings {
+  direction: rtl;
 }
 .settings h1 {
   font-size: 32px;

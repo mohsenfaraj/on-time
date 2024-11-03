@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Timer from "./timer";
+import tinycolor from "tinycolor2";
 import "./style.css";
 import Settings from "./Settings";
 import { useEffect } from "react";
@@ -11,6 +12,11 @@ function App() {
   const [times, setTimes] = useState([]);
   const [activeTimer, setactiveTimer] = useState(0);
   const [repos, setrepos] = useState(TIMES_LINK);
+
+  const hue = useMemo(() => {
+    if (times.length > 0) return Math.round((activeTimer / times.length) * 100);
+    else return 0;
+  }, [activeTimer]);
 
   useEffect(() => {
     async function load() {
@@ -25,6 +31,14 @@ function App() {
     return (
       <BrowserRouter>
         <div>
+          <style>
+            {`
+              :root{
+              --primary: ${tinycolor(`hsl(${hue}%, 100%, 40%)`)} ;
+              --secondary: ${tinycolor(`hsl(${hue}%, 100%, 30%)`)} ;
+              }
+            `}
+          </style>
           <div className="header">
             <div className="apptitle">
               <div className="logo">
@@ -37,7 +51,7 @@ function App() {
               <div className="settingsbtn">
                 <Link to={"/on-time/settings"}>
                   <i className="fas fa-cog fa-2x"></i>
-                  <p>Settings</p>
+                  <p>تنظیمات</p>
                 </Link>
               </div>
             </div>

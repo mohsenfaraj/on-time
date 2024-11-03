@@ -1,6 +1,5 @@
 import React from "react";
 import { useMemo } from "react";
-
 export default function SelectLocation({ times, activeTimer, setactiveTimer }) {
   const titles = useMemo(() => {
     return times.map((item) => {

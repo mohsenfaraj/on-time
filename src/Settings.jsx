@@ -9,9 +9,9 @@ export default function Settings({ repos, setrepos }) {
   }
   return (
     <div className="settings">
-      <h1>Settings</h1>
+      <h1>تنظیمات</h1>
       <div>
-        <h2>Active Repositories:</h2>
+        <h2>برنامه‌های زمانی فعال:</h2>
         <div className="repos">
           {repos.map((item, index) => {
             return (
