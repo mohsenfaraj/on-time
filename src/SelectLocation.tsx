@@ -28,7 +28,10 @@ export default function SelectLocation({
           return (
             <button
               onClick={() => handleLocationSwitch(index)}
-              className={index == activeTimer ? "selected" : ""}
+              className={
+                index == activeTimer ? "glass-button selected" : "glass-button"
+              }
+              key={title + index}
             >
               {title}
             </button>

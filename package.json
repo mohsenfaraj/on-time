@@ -13,7 +13,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
-    "tinycolor2": "^1.6.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

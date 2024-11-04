@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Timer from "./Timer";
-// @ts-expect-error
-import tinycolor from "tinycolor2";
 import "./style.css";
 import Settings from "./Settings";
 import { useEffect } from "react";
@@ -15,7 +13,7 @@ function App() {
   const [repos, setrepos] = useState(TIMES_LINK);
 
   const hue = useMemo(() => {
-    if (times.length > 0) return Math.round((activeTimer / times.length) * 100);
+    if (times.length > 0) return Math.round((activeTimer / times.length) * 360);
     else return 0;
   }, [activeTimer]);
 
@@ -35,8 +33,7 @@ function App() {
           <style>
             {`
               :root{
-              --primary: ${tinycolor(`hsl(${hue}%, 100%, 40%)`)} ;
-              --secondary: ${tinycolor(`hsl(${hue}%, 100%, 30%)`)} ;
+              --primary: ${`${hue}, 100%, 40%`} ;
               }
             `}
           </style>

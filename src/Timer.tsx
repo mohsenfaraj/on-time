@@ -1,9 +1,22 @@
-import { useEffect, useRef, useState, memo, useCallback } from "react";
+import { useEffect, useRef, useState, memo, useCallback, useMemo } from "react";
 import { scheduleType } from "./xlsxLoader";
 function Timer({ timer }: { timer: scheduleType }) {
   const [current, setCurrent] = useState(new Date());
   const [timeIndex, setTimeIndex] = useState(0);
   const timerRef = useRef(0);
+  const [activeSub, setActiveSub] = useState(-1);
+
+  const times = useMemo((): string[] => {
+    if (activeSub == -1) return timer.times;
+    else {
+      if (activeSub < timer.subSchedule.length) {
+        return timer.subSchedule[activeSub].times;
+      } else {
+        setActiveSub(-1);
+        return timer.times;
+      }
+    }
+  }, [activeSub, timer]);
 
   type closestTime = (hour: number, min: number) => number[];
   // This function only depends on `timer.times`, so we use useCallback to avoid re-creating it.
@@ -22,7 +35,7 @@ function Timer({ timer }: { timer: scheduleType }) {
       }
       return ["-1", -1];
     },
-    [timer.times]
+    [times]
   );
 
   const calcRemainingTime = useCallback(
@@ -66,24 +79,58 @@ function Timer({ timer }: { timer: scheduleType }) {
     setTimeIndex(index);
   }, [closestTime, current]);
 
-  const times = timer.times.map((time, index) => (
-    <li key={time.toString()}>
-      <div className={index === timeIndex ? "active timebox" : "timebox"}>
-        <span>{time}</span>
-      </div>
-    </li>
-  ));
+  function timesManager() {
+    if (timer.subSchedule.length > 0) {
+      let subSelector = timer.subSchedule.map((sub, index) => {
+        return (
+          <button
+            className={
+              activeSub == index ? "selected glass-button" : "glass-button"
+            }
+            onClick={() => setActiveSub(index)}
+            key={sub.name}
+          >
+            {sub.name}
+          </button>
+        );
+      });
+      return (
+        <div className="subSelector">
+          {subSelector}
+          <button
+            className={
+              activeSub == -1 ? "selected glass-button" : "glass-button"
+            }
+            onClick={() => setActiveSub(-1)}
+          >
+            پیشفرض
+          </button>
+        </div>
+      );
+    }
+  }
 
   return (
     <>
       <h2>{`${timer.origin} به ${timer.destiny}`}</h2>
       <div className="timesContainer">
-        {timeIndex > 0 ? (
-          <p>زمان باقی‌مانده: {calcRemainingTime(timer.times[timeIndex])}</p>
+        {timeIndex >= 0 ? (
+          <p>زمان باقی‌مانده: {calcRemainingTime(times[timeIndex])}</p>
         ) : (
           <p>اتوبوسی پس از این زمان نیست!</p>
         )}
-        <ul>{times}</ul>
+        {timesManager()}
+        <ul>
+          {times.map((time, index) => (
+            <li key={time.toString()}>
+              <div
+                className={index === timeIndex ? "active timebox" : "timebox"}
+              >
+                <span>{time}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </>
   );
