@@ -1,3 +1,5 @@
+// TODO: better error handling and notify the user if the file is corrupted/invalid format
+// TODO: check for bugs in sheetsJs and counter for injections
 import * as XLSX from "xlsx";
 
 export type scheduleType = {
@@ -10,12 +12,17 @@ export type scheduleType = {
   }[];
 };
 
-export async function loadTimes(urls: string[]) {
+export type repoType = {
+  name: string;
+  link: string;
+};
+
+export async function loadTimes(repos: repoType[]) {
   let data: scheduleType[] = [];
   const times = await Promise.all(
-    urls.map(async (url) => {
+    repos.map(async (repo) => {
       try {
-        const response = await fetch(url);
+        const response = await fetch(repo.link);
         const arrayBuffer = await response.arrayBuffer();
         const workbook = XLSX.read(arrayBuffer, { type: "array" });
         const sheetName = workbook.SheetNames[0];

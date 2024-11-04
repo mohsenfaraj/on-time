@@ -120,6 +120,7 @@ input[type="button"]:disabled {
   font-size: 1em;
 }
 .location-selector {
+  text-align: center;
   font-size: 0.9em;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -136,6 +137,7 @@ input[type="button"]:disabled {
   font-size: 1em;
   font-weight: bold;
   transition: all 0.3s ease-in;
+  text-decoration: none;
 }
 .glass-button.selected {
   color: hsl(var(--primary));
@@ -143,6 +145,7 @@ input[type="button"]:disabled {
   background-color: hsla(var(--primary), 0.1);
 }
 .container {
+  min-height: 300px;
   text-align: center;
   border-radius: 30px;
   background-color: #fff;
@@ -286,6 +289,22 @@ button.red {
 }
 button.red:disabled {
   opacity: 0.5;
+}
+.addrepo h1 {
+  color: hsl(var(--primary));
+}
+.addrepo form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 500px;
+  margin: 30px auto;
+}
+.addrepo form input[type="text"],
+.addrepo form input[type="url"] {
+  padding: 5px;
+  margin-right: 30px;
 }
 @keyframes glow {
   0% {

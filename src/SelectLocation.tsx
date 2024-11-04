@@ -24,6 +24,9 @@ export default function SelectLocation({
     <div className="locations">
       <h2>مبدا خود را انتخاب کنید:</h2>
       <div className="location-selector">
+        {times.length == 0 && (
+          <p style={{ gridColumn: "1 / span 2" }}> برنامه‌ای تعریف نشده است</p>
+        )}
         {titles.map((title, index) => {
           return (
             <button

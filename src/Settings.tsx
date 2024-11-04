@@ -1,16 +1,23 @@
+import { Link } from "react-router-dom";
 import Repo from "./Repo";
+import { repoType } from "./xlsxLoader";
+import { defaultRepo } from "./App";
 
 type props = {
-  repos: string[];
-  setRepos: React.Dispatch<React.SetStateAction<string[]>>;
+  repos: repoType[];
+  setRepos: React.Dispatch<React.SetStateAction<repoType[]>>;
 };
 
 export default function Settings({ repos, setRepos }: props) {
   function remove(link: string) {
     const newRepos = repos.filter((item) => {
-      return item !== link;
+      return item.link !== link;
     });
     setRepos(newRepos);
+  }
+
+  function resetProgram() {
+    setRepos(defaultRepo);
   }
 
   return (
@@ -22,13 +29,22 @@ export default function Settings({ repos, setRepos }: props) {
           {repos.map((item, index) => {
             return (
               <Repo
-                link={item}
+                link={item.link}
                 remove={remove}
                 disabled={repos.length == 1}
-                name={index}
+                name={item.name}
+                key={item.link}
               />
             );
           })}
+          <div>
+            <Link to={"/on-time/add"} className="glass-button selected">
+              افزودن برنامه جدید
+            </Link>
+            <button className="glass-button selected" onClick={resetProgram}>
+              بازنشانی برنامه به پیشفرض
+            </button>
+          </div>
         </div>
       </div>
     </div>
