@@ -1,4 +1,5 @@
 // TODO: better error handling and notify the user if the file is corrupted/invalid format
+// TODO: sort the times and only allow valid time formats
 // TODO: check for bugs in sheetsJs and counter for injections
 import * as XLSX from "xlsx";
 
@@ -38,6 +39,7 @@ export async function loadTimes(repos: repoType[]) {
           .forEach((row, rowIndex) => {
             row.split(",").forEach((cell, cellIndex, rowArr) => {
               rowLen = rowArr.length;
+
               if (cell && rowIndex === 0) {
                 let destiny =
                   cellIndex % 2 == 0
@@ -55,13 +57,6 @@ export async function loadTimes(repos: repoType[]) {
             });
           });
         offset += rowLen;
-
-        // TODO: sort times and merge day-specific schedules with others
-        // Sort times for each day
-        // data.forEach((day) => {
-        //   day.times.sort((a, b) => (a > b ? 1 : -1));
-        // });
-
         return data;
       } catch (error) {
         console.error("Error fetching .xlsx data:", error);
@@ -70,8 +65,8 @@ export async function loadTimes(repos: repoType[]) {
     })
   );
 
-  // check if the schedule is day-specific
   data = data.filter((item, arrIndex) => {
+    // check if the schedule is day-specific
     const [title, day] = regexCheck(item.origin);
     const [destinyTitle, destinyDay] = regexCheck(item.destiny);
     if (title) {

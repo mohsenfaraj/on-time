@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState, memo, useCallback, useMemo } from "react";
 import { scheduleType } from "./xlsxLoader";
-function Timer({ timer }: { timer: scheduleType }) {
+function Timer({
+  timer,
+  format24,
+}: {
+  timer: scheduleType;
+  format24: boolean;
+}) {
   const [current, setCurrent] = useState(new Date());
   const [timeIndex, setTimeIndex] = useState(0);
   const timerRef = useRef(0);
@@ -110,6 +116,25 @@ function Timer({ timer }: { timer: scheduleType }) {
     }
   }
 
+  function format(time: string) {
+    if (format24) return time;
+    else {
+      const [hour, min] = time.split(":").map((item) => parseInt(item));
+      return (
+        <>
+          <span className="relative">
+            {hour > 12
+              ? hour - 12 + ":" + String(min).padStart(2, "0")
+              : hour + ":" + String(min).padStart(2, "0")}
+            <span className="text-x2sm absolute bottom-1/2 left-1/2 -translate-x-1/2 translate-y-5 opacity-50">
+              {hour > 12 ? "ب.ظ" : "ق.ظ"}
+            </span>
+          </span>
+        </>
+      );
+    }
+  }
+
   return (
     <>
       <h2 className="font-extrabold text-2xl text-zinc-600">{`${timer.origin} به ${timer.destiny}`}</h2>
@@ -124,16 +149,15 @@ function Timer({ timer }: { timer: scheduleType }) {
         {timesManager()}
         <ul className="grid grid-cols-4 gap-3 text-sm mt-5">
           {times.map((time, index) => (
-            <li key={time.toString()}>
-              <div
-                className={
-                  index === timeIndex
-                    ? "time-box bg-primary animate-pulse shadow-primary"
-                    : "time-box"
-                }
-              >
-                <span>{time}</span>
-              </div>
+            <li
+              key={time.toString()}
+              className={
+                index === timeIndex
+                  ? "time-box bg-primary animate-pulse shadow-primary"
+                  : "time-box"
+              }
+            >
+              {format(time)}
             </li>
           ))}
         </ul>

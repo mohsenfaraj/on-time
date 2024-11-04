@@ -5,7 +5,7 @@
 @tailwind utilities;
 @layer components {
   .time-box {
-    @apply border border-[#00000033] shadow shadow-zinc-400 bg-zinc-400 p-2 rounded-xl font-bold text-white tracking-widest;
+    @apply border border-[#00000033] shadow shadow-zinc-400 bg-zinc-400 px-2 py-3 rounded-xl font-bold text-white tracking-widest;
   }
   .glass-button {
     @apply border border-zinc-500 p-2 rounded-lg font-medium transition-all duration-200 text-zinc-500 m-0;

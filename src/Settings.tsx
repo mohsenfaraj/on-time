@@ -1,15 +1,22 @@
 import { Link } from "react-router-dom";
 import Repo from "./Repo";
 import { repoType } from "./xlsxLoader";
-import { defaultRepo } from "./App";
+import { defaultRepo, SettingsType } from "./App";
 import { base } from "./vars";
 
 type props = {
   repos: repoType[];
   setRepos: React.Dispatch<React.SetStateAction<repoType[]>>;
+  settings: SettingsType;
+  setSettings: React.Dispatch<React.SetStateAction<SettingsType>>;
 };
 
-export default function Settings({ repos, setRepos }: props) {
+export default function Settings({
+  repos,
+  setRepos,
+  settings,
+  setSettings,
+}: props) {
   function remove(link: string) {
     const newRepos = repos.filter((item) => {
       return item.link !== link;
@@ -49,6 +56,25 @@ export default function Settings({ repos, setRepos }: props) {
             </button>
           </div>
         </div>
+      </div>
+      <div className="flex justify-center mb-4 rtl">
+        <input
+          id="overwrite"
+          type="checkbox"
+          name="overwrite"
+          checked={settings.format24}
+          onChange={() => {
+            setSettings((old) => {
+              const newSettings = { ...old };
+              newSettings.format24 = !old.format24;
+              return newSettings;
+            });
+          }}
+          className="w-5 h-5"
+        />
+        <label htmlFor="overwrite" className="ms-2 text-gray-900">
+          استفاده از فرمت زمانی ۲۴ ساعته
+        </label>
       </div>
     </div>
   );

@@ -9,15 +9,26 @@ import SelectLocation from "./SelectLocation";
 import { loadTimes, repoType, scheduleType } from "./xlsxLoader";
 import AddRepo from "./AddRepo";
 import { base } from "./vars";
+
 export const defaultRepo = [
   {
     name: "دانشگاه صنعتی ارومیه",
     link: "./UUT-BUS.xlsx",
   },
 ];
+
+export type SettingsType = {
+  format24: boolean;
+};
+
+const defaultSettings = {
+  format24: false,
+} as SettingsType;
+
 function App() {
   const [times, setTimes] = useState<scheduleType[]>([]);
   const [activeTimer, setactiveTimer] = useState(0);
+
   const [repos, setrepos] = useState((): repoType[] => {
     let data = localStorage.getItem("repos");
     if (data) {
@@ -25,6 +36,15 @@ function App() {
     }
     return defaultRepo;
   });
+
+  const [settings, setSettings] = useState((): SettingsType => {
+    let data = localStorage.getItem("settings");
+    if (data) {
+      return JSON.parse(data);
+    }
+    return defaultSettings;
+  });
+
   const hue = useMemo(() => {
     if (times.length > 0) return Math.round((activeTimer / times.length) * 360);
     else return 0;
@@ -100,7 +120,10 @@ function App() {
               path={base}
               element={
                 times && times.length > 0 ? (
-                  <Timer timer={times[activeTimer]} />
+                  <Timer
+                    timer={times[activeTimer]}
+                    format24={settings.format24}
+                  />
                 ) : (
                   <h2>برنامه‌ای برای نمایش وجود ندارد</h2>
                 )
@@ -108,7 +131,14 @@ function App() {
             />
             <Route
               path={base + "settings"}
-              element={<Settings repos={repos} setRepos={setrepos} />}
+              element={
+                <Settings
+                  repos={repos}
+                  setRepos={setrepos}
+                  setSettings={setSettings}
+                  settings={settings}
+                />
+              }
             />
             <Route
               path={base + "add"}
