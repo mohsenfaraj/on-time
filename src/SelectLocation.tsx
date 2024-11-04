@@ -21,9 +21,9 @@ export default function SelectLocation({
   }
 
   return (
-    <div className="locations">
-      <h2>مبدا خود را انتخاب کنید:</h2>
-      <div className="location-selector">
+    <div className="max-w-screen-sm w-full rtl flex flex-col justify-around gap-4 items-center bg-white rounded-xl mx-auto mt-5 z-10 p-5">
+      <h2 className="text-zinc-600 font-semibold">مبدا خود را انتخاب کنید:</h2>
+      <div className="grid grid-cols-2 gap-3">
         {times.length == 0 && (
           <p style={{ gridColumn: "1 / span 2" }}> برنامه‌ای تعریف نشده است</p>
         )}

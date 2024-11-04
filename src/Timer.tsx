@@ -22,7 +22,7 @@ function Timer({ timer }: { timer: scheduleType }) {
   // This function only depends on `timer.times`, so we use useCallback to avoid re-creating it.
   const closestTime = useCallback(
     (hour: number, min: number): [string, number] => {
-      const timeList = timer.times;
+      const timeList = times;
       const total = hour * 60 + min;
       for (let i = 0; i < timeList.length; i++) {
         const [targetHour, targetMin] = timeList[i].split(":");
@@ -95,7 +95,7 @@ function Timer({ timer }: { timer: scheduleType }) {
         );
       });
       return (
-        <div className="subSelector">
+        <div className="flex gap-3 justify-center m-4 text-sm">
           {subSelector}
           <button
             className={
@@ -112,19 +112,25 @@ function Timer({ timer }: { timer: scheduleType }) {
 
   return (
     <>
-      <h2>{`${timer.origin} به ${timer.destiny}`}</h2>
-      <div className="timesContainer">
+      <h2 className="font-extrabold text-2xl text-zinc-600">{`${timer.origin} به ${timer.destiny}`}</h2>
+      <div className="max-w-sm mx-auto mt-5 ">
         {timeIndex >= 0 ? (
-          <p>زمان باقی‌مانده: {calcRemainingTime(times[timeIndex])}</p>
+          <p className="text-zinc-500">
+            زمان باقی‌مانده: {calcRemainingTime(times[timeIndex])}
+          </p>
         ) : (
-          <p>اتوبوسی پس از این زمان نیست!</p>
+          <p className="text-zinc-500">اتوبوسی پس از این زمان نیست!</p>
         )}
         {timesManager()}
-        <ul>
+        <ul className="grid grid-cols-4 gap-3 text-sm mt-5">
           {times.map((time, index) => (
             <li key={time.toString()}>
               <div
-                className={index === timeIndex ? "active timebox" : "timebox"}
+                className={
+                  index === timeIndex
+                    ? "time-box bg-primary animate-pulse shadow-primary"
+                    : "time-box"
+                }
               >
                 <span>{time}</span>
               </div>

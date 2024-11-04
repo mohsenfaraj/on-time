@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Repo from "./Repo";
 import { repoType } from "./xlsxLoader";
 import { defaultRepo } from "./App";
-import { base } from "./Vars";
+import { base } from "./vars";
 
 type props = {
   repos: repoType[];
@@ -22,11 +22,13 @@ export default function Settings({ repos, setRepos }: props) {
   }
 
   return (
-    <div className="settings">
-      <h1>تنظیمات</h1>
-      <div>
+    <div className="flex flex-col gap-6 rtl max-w-screen-md mx-auto">
+      <h1 className="text-2xl text-primary border-b border-primary font-bold">
+        تنظیمات
+      </h1>
+      <div className="flex flex-col gap-5">
         <h2>برنامه‌های زمانی فعال:</h2>
-        <div className="repos">
+        <div className="flex flex-col gap-3">
           {repos.map((item, index) => {
             return (
               <Repo
@@ -38,12 +40,12 @@ export default function Settings({ repos, setRepos }: props) {
               />
             );
           })}
-          <div>
+          <div className="mt-3 flex justify-center gap-4">
             <Link to={base + "add"} className="glass-button selected">
               افزودن برنامه جدید
             </Link>
-            <button className="glass-button selected" onClick={resetProgram}>
-              بازنشانی برنامه به پیشفرض
+            <button className="glass-button" onClick={resetProgram}>
+              بازنشانی
             </button>
           </div>
         </div>

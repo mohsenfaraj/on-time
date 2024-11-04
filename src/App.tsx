@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import SelectLocation from "./SelectLocation";
 import { loadTimes, repoType, scheduleType } from "./xlsxLoader";
 import AddRepo from "./AddRepo";
-import { base } from "./Vars";
+import { base } from "./vars";
 export const defaultRepo = [
   {
     name: "دانشگاه صنعتی ارومیه",
@@ -37,6 +37,7 @@ function App() {
     }
     localStorage.setItem("repos", JSON.stringify(repos));
     load();
+    setactiveTimer(0);
   }, [repos]);
 
   const css = `.header{min-height:100px;!important}`;
@@ -50,17 +51,23 @@ function App() {
               }
             `}
         </style>
-        <div className="header">
-          <div className="apptitle">
-            <div className="logo">
-              <Link to={base}>
+        <div className="header bg-gradient-to-b bg-primary flex flex-col min-h-96 py-5 px-8 pb-16 transition duration-200 ease-in relative">
+          <div className="flex gap-5 items-center z-10 text-white">
+            <div>
+              <Link
+                to={base}
+                className="no-underline flex flex-col gap-3 items-center text-xs"
+              >
                 <i className="fas fa-bus fa-2x"></i>
                 <h1>[On-Time]</h1>
               </Link>
             </div>
 
-            <div className="settingsbtn">
-              <Link to={base + "settings"}>
+            <div className="ml-auto">
+              <Link
+                to={base + "settings"}
+                className="flex justify-center items-center flex-col text-xs gap-2"
+              >
                 <i className="fas fa-cog fa-2x"></i>
                 <p>تنظیمات</p>
               </Link>
@@ -80,14 +87,14 @@ function App() {
             <Route
               path={base + "settings"}
               element={
-                <div className="settingsHead">
+                <div className="h-full relative text-white text-center">
                   <style>{css}</style>
                 </div>
               }
             />
           </Routes>
         </div>
-        <div className="container">
+        <div className="min-h-80 text-center rounded-3xl bg-white -translate-y-7 p-8 pb-16">
           <Routes>
             <Route
               path={base}
@@ -105,7 +112,13 @@ function App() {
             />
             <Route
               path={base + "add"}
-              element={<AddRepo repos={repos} setRepos={setrepos} />}
+              element={
+                <>
+                  {" "}
+                  <style>{css}</style>
+                  <AddRepo repos={repos} setRepos={setrepos} />
+                </>
+              }
             />
           </Routes>
         </div>

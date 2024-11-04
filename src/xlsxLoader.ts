@@ -19,6 +19,7 @@ export type repoType = {
 
 export async function loadTimes(repos: repoType[]) {
   let data: scheduleType[] = [];
+  let offset = 0;
   const times = await Promise.all(
     repos.map(async (repo) => {
       try {
@@ -30,14 +31,14 @@ export async function loadTimes(repos: repoType[]) {
 
         // Convert to CSV
         const csv = XLSX.utils.sheet_to_csv(worksheet, { blankrows: false });
-
+        let rowLen = 0;
         csv
           .trim()
           .split("\n")
           .forEach((row, rowIndex) => {
             row.split(",").forEach((cell, cellIndex, rowArr) => {
-              if (rowIndex === 0) {
-                // Initialize day names on the first row
+              rowLen = rowArr.length;
+              if (cell && rowIndex === 0) {
                 let destiny =
                   cellIndex % 2 == 0
                     ? rowArr[cellIndex + 1]
@@ -49,26 +50,11 @@ export async function loadTimes(repos: repoType[]) {
                   subSchedule: [],
                 });
               } else if (cell && cell !== "-") {
-                // Add valid time entries
-                data[cellIndex].times.push(formatTime(cell));
+                data[cellIndex + offset].times.push(formatTime(cell));
               }
             });
           });
-
-        // check if the schedule is day-specific
-        data = data.filter((item, arrIndex) => {
-          const [title, day] = regexCheck(item.origin);
-          const [destinyTitle, destinyDay] = regexCheck(item.destiny);
-          if (title) {
-            // find and append the data as subschedule to the proper schedule
-            let index = data.findIndex((item) => {
-              return item.origin == title && item.destiny == destinyTitle;
-            });
-            data[index].subSchedule.push({ name: day, times: item.times });
-            return false;
-          }
-          return true;
-        });
+        offset += rowLen;
 
         // TODO: sort times and merge day-specific schedules with others
         // Sort times for each day
@@ -83,6 +69,21 @@ export async function loadTimes(repos: repoType[]) {
       }
     })
   );
+
+  // check if the schedule is day-specific
+  data = data.filter((item, arrIndex) => {
+    const [title, day] = regexCheck(item.origin);
+    const [destinyTitle, destinyDay] = regexCheck(item.destiny);
+    if (title) {
+      // find and append the data as subschedule to the proper schedule
+      let index = data.findIndex((item) => {
+        return item.origin == title && item.destiny == destinyTitle;
+      });
+      data[index].subSchedule.push({ name: day, times: item.times });
+      return false;
+    }
+    return true;
+  });
 
   // Filter out any null results due to errors
   return data.filter(Boolean);
