@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import SelectLocation from "./SelectLocation";
 import { loadTimes, repoType, scheduleType } from "./xlsxLoader";
 import AddRepo from "./AddRepo";
+import { base } from "./Vars";
 export const defaultRepo = [
   {
     name: "دانشگاه صنعتی ارومیه",
@@ -52,14 +53,14 @@ function App() {
         <div className="header">
           <div className="apptitle">
             <div className="logo">
-              <Link to={"/on-time/"}>
+              <Link to={base}>
                 <i className="fas fa-bus fa-2x"></i>
                 <h1>[On-Time]</h1>
               </Link>
             </div>
 
             <div className="settingsbtn">
-              <Link to={"/on-time/settings"}>
+              <Link to={base + "settings"}>
                 <i className="fas fa-cog fa-2x"></i>
                 <p>تنظیمات</p>
               </Link>
@@ -67,7 +68,7 @@ function App() {
           </div>
           <Routes>
             <Route
-              path="/on-time/"
+              path={base}
               element={
                 <SelectLocation
                   times={times}
@@ -77,7 +78,7 @@ function App() {
               }
             />
             <Route
-              path="/on-time/settings"
+              path={base + "settings"}
               element={
                 <div className="settingsHead">
                   <style>{css}</style>
@@ -89,7 +90,7 @@ function App() {
         <div className="container">
           <Routes>
             <Route
-              path="/on-time"
+              path={base}
               element={
                 times && times.length > 0 ? (
                   <Timer timer={times[activeTimer]} />
@@ -99,11 +100,11 @@ function App() {
               }
             />
             <Route
-              path="/on-time/settings"
+              path={base + "settings"}
               element={<Settings repos={repos} setRepos={setrepos} />}
             />
             <Route
-              path="/on-time/add"
+              path={base + "add"}
               element={<AddRepo repos={repos} setRepos={setrepos} />}
             />
           </Routes>
@@ -111,7 +112,6 @@ function App() {
       </div>
     </BrowserRouter>
   );
-  // TODO: create a loading page
 }
 
 export default App;

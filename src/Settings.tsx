@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Repo from "./Repo";
 import { repoType } from "./xlsxLoader";
 import { defaultRepo } from "./App";
+import { base } from "./Vars";
 
 type props = {
   repos: repoType[];
@@ -38,7 +39,7 @@ export default function Settings({ repos, setRepos }: props) {
             );
           })}
           <div>
-            <Link to={"/on-time/add"} className="glass-button selected">
+            <Link to={base + "add"} className="glass-button selected">
               افزودن برنامه جدید
             </Link>
             <button className="glass-button selected" onClick={resetProgram}>
