@@ -138,7 +138,10 @@ function Timer({
   return (
     <>
       <h2 className="font-extrabold text-2xl text-zinc-600">{`${timer.origin} به ${timer.destiny}`}</h2>
-      <div className="max-w-sm mx-auto mt-5 ">
+      <div className="max-w-sm mx-auto mt-5 relative">
+        <p className="absolute -top-14 left-1/2 -translate-x-1/2 text-9xl font-black -z-10 text-zinc-100">
+          {"[" + current.getHours() + ":" + current.getMinutes() + "]"}
+        </p>
         {timeIndex >= 0 ? (
           <p className="text-zinc-500">
             زمان باقی‌مانده: {calcRemainingTime(times[timeIndex])}
