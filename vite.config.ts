@@ -9,7 +9,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff,woff2,ttf}"],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,xlsx,woff,woff2,ttf}"],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -60,7 +60,6 @@ export default defineConfig({
         name: "On-Time Bus time Tracker",
         short_name: "On-Time",
         description: "track the next bus arriving time with on time.",
-        theme_color: "#ffffff",
         icons: [
           {
             src: "ontime192.png",
