@@ -1,5 +1,8 @@
 name: Build and Deploy
-on: [push]
+on:
+  push:
+    branches:
+      - main
 permissions:
   contents: write
 jobs:
@@ -10,7 +13,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - name: PNPM Setup
+      - name: PNPM Setup 🤖
         uses: pnpm/action-setup@v4
         with:
           version: 9
