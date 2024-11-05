@@ -76,5 +76,4 @@ export default defineConfig({
       },
     }),
   ],
-  base: "/on-time/",
 });
