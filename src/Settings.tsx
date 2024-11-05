@@ -3,6 +3,7 @@ import Repo from "./Repo";
 import { repoType } from "./xlsxLoader";
 import { defaultRepo, SettingsType } from "./App";
 import { base } from "./vars";
+import About from "./About";
 
 type props = {
   repos: repoType[];
@@ -25,7 +26,8 @@ export default function Settings({
   }
 
   function resetProgram() {
-    setRepos(defaultRepo);
+    let RuSureAboutDat = confirm(`آیا از بازنشانی برنامه‌ها مطمئن هستید؟`);
+    if (RuSureAboutDat) setRepos(defaultRepo);
   }
 
   return (
@@ -76,6 +78,7 @@ export default function Settings({
           استفاده از فرمت زمانی ۲۴ ساعته
         </label>
       </div>
+      <About />
     </div>
   );
 }

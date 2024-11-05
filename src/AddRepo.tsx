@@ -1,7 +1,8 @@
 // TODO: Check file format before adding to the repos
 import React, { useEffect } from "react";
 import { repoType } from "./xlsxLoader";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { base } from "./vars";
 
 type Props = {
   repos: repoType[];
@@ -13,7 +14,8 @@ const AddRepo = ({ repos, setRepos }: Props) => {
   const queryParams = new URLSearchParams(location.search);
   const name = queryParams.get("name");
   const link = queryParams.get("link");
-  const overwrite = queryParams.get("rm");
+  const overwrite = queryParams.get("rm") == "true";
+  const navigate = useNavigate();
 
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -37,6 +39,7 @@ const AddRepo = ({ repos, setRepos }: Props) => {
         });
       }
       alert(`برنامه ${newRepo.name} با موفقیت اضافه شد!`);
+      navigate(base + "settings");
     }
   }
   return (
@@ -90,7 +93,7 @@ const AddRepo = ({ repos, setRepos }: Props) => {
             id="overwrite"
             type="checkbox"
             name="overwrite"
-            value={"true"}
+            defaultChecked={overwrite || false}
             className="w-5 h-5"
           />
           <label htmlFor="overwrite" className="ms-2 text-gray-900">

@@ -32,7 +32,12 @@ export default function Repo({ name, link, remove, disabled }: props) {
           className="h-5 w-5 flex justify-center items-center bg-red-700 disabled:opacity-50 p-4 rounded text-white"
           disabled={disabled}
           onClick={() => {
-            remove(link);
+            let RuSureAboutDat = confirm(
+              `آیا از حذف برنامه «${name}» مطمئن هستید؟`
+            );
+            if (RuSureAboutDat) {
+              remove(link);
+            }
           }}
         >
           <i className="fas fa-trash"></i>
