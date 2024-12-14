@@ -9,8 +9,25 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,xlsx,woff,woff2,ttf}"],
+        globPatterns: [
+          "**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,xlsx}",
+          "**/assets/*.{js,css}",
+        ],
         runtimeCaching: [
+          {
+            urlPattern: /index\.html/,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "html-cache",
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: "CacheFirst",
@@ -18,7 +35,7 @@ export default defineConfig({
               cacheName: "google-fonts-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365,
               },
               cacheableResponse: {
                 statuses: [0, 200],
@@ -32,7 +49,7 @@ export default defineConfig({
               cacheName: "gstatic-fonts-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365,
               },
               cacheableResponse: {
                 statuses: [0, 200],
@@ -46,7 +63,21 @@ export default defineConfig({
               cacheName: "cloudflare-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /.*\.xlsx$/i,
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "xlsx-cache",
+              expiration: {
+                maxEntries: 20,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
               },
               cacheableResponse: {
                 statuses: [0, 200],
@@ -54,6 +85,7 @@ export default defineConfig({
             },
           },
         ],
+        navigateFallback: "index.html",
       },
       includeAssets: ["ontime192.png", "ontime512.png"],
       manifest: {
@@ -61,6 +93,7 @@ export default defineConfig({
         short_name: "On-Time",
         description: "track the next bus arriving time with on time.",
         theme_color: "#ffffff",
+        start_url: "/",
         icons: [
           {
             src: "ontime192.png",
