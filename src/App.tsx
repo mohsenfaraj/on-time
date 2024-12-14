@@ -1,4 +1,6 @@
 // TODO: better error handling and loading management
+// TODO: use custom hooks for storing persistent data (like settings and repos) for better readability
+
 import { useState, useMemo } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Timer from "./Timer";
@@ -59,6 +61,10 @@ function App() {
     load();
     setactiveTimer(0);
   }, [repos]);
+
+  useEffect(() => {
+    localStorage.setItem("settings", JSON.stringify(settings));
+  }, [settings]);
 
   const css = `.header{min-height:100px;!important}`;
   return (
