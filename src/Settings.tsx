@@ -30,6 +30,18 @@ export default function Settings({
     if (RuSureAboutDat) setRepos(defaultRepo);
   }
 
+  function clearCache() {
+    if ("caches" in window) {
+      caches
+        .keys()
+        .then((names) => {
+          names.forEach((name) => caches.delete(name));
+        })
+        .then(() => {
+          window.location.reload();
+        });
+    }
+  }
   return (
     <div className="flex flex-col gap-6 rtl max-w-screen-md mx-auto">
       <h1 className="text-2xl text-primary border-b border-primary font-bold">
@@ -77,6 +89,20 @@ export default function Settings({
         <label htmlFor="overwrite" className="ms-2 text-gray-900">
           استفاده از فرمت زمانی ۲۴ ساعته
         </label>
+      </div>
+      <div className="flex flex-col gap-3">
+        <p>
+          در صورتیکه برنامه دچار مشکل شده و به درستی کار نمی‌کند می‌توانید با
+          زدن دکمه پایین کش برنامه را پاک کنید.
+        </p>
+        <p>برای لود کردن مجدد برنامه دسترسی اینترنت نیاز است.</p>
+
+        <button
+          className="glass-button max-w-44 mx-auto"
+          onClick={() => clearCache()}
+        >
+          پاک کردن کش برنامه
+        </button>
       </div>
       <About />
     </div>
