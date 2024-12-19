@@ -9,25 +9,14 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,xlsx}"],
+        globPatterns: [
+          "**/*.{js,css,ico,png,svg,woff,woff2,ttf,xlsx}",
+          "index.html",
+        ],
         skipWaiting: true,
         clientsClaim: true,
         cleanupOutdatedCaches: true,
         runtimeCaching: [
-          {
-            urlPattern: /index\.html/,
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "html-cache",
-              expiration: {
-                maxEntries: 1,
-                maxAgeSeconds: 60 * 60 * 24 * 7, // 1 week
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: "CacheFirst",
@@ -70,22 +59,8 @@ export default defineConfig({
               },
             },
           },
-          {
-            urlPattern: /.*\.xlsx$/i,
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "xlsx-cache",
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-              },
-              cacheableResponse: {
-                statuses: [0, 200],
-              },
-            },
-          },
         ],
-        navigateFallback: "/",
+        navigateFallback: "/index.html",
       },
       includeAssets: ["ontime192.png", "ontime512.png"],
       manifest: {
