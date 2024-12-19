@@ -68,7 +68,7 @@ export default defineConfig({
         short_name: "On-Time",
         description: "track the next bus arriving time with on time.",
         theme_color: "#ffffff",
-        start_url: "/",
+        start_url: ".",
         icons: [
           {
             src: "ontime192.png",
