@@ -9,12 +9,10 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        globPatterns: [
-          "**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,xlsx}",
-          "**/assets/*.{js,css}",
-        ],
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,xlsx}"],
         skipWaiting: true,
         clientsClaim: true,
+        cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
             urlPattern: /index\.html/,
@@ -87,7 +85,7 @@ export default defineConfig({
             },
           },
         ],
-        navigateFallback: "index.html",
+        navigateFallback: "/",
       },
       includeAssets: ["ontime192.png", "ontime512.png"],
       manifest: {
