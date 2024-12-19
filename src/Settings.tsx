@@ -38,7 +38,7 @@ export default function Settings({
           names.forEach((name) => caches.delete(name));
         })
         .then(() => {
-          window.location.reload();
+          window.location.href = "/";
         });
     }
   }

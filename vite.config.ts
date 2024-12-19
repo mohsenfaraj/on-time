@@ -13,6 +13,8 @@ export default defineConfig({
           "**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,xlsx}",
           "**/assets/*.{js,css}",
         ],
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
           {
             urlPattern: /index\.html/,
